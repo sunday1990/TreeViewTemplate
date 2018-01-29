@@ -90,8 +90,8 @@ CGFloat cellHeight = 44;
 
 @implementation CustomSearchBar
 
-static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
-
+//static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
+static char DeleteBackwardItemSelectedKey;
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -161,8 +161,10 @@ static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
             }else{
                  lastLabel = [self.subviews lastObject];
             }
+            NSLog(@"lastLabel:%@",lastLabel);
+
             //get if selected
-            BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey);
+            BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey);
             if (selected) {
                 [lastLabel removeFromSuperview];
                 id delegate = self.delegate;
@@ -172,9 +174,10 @@ static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
                 if (delegate && [delegate respondsToSelector:@selector(customSearchBar:removeItem:)]) {
                     [delegate customSearchBar:self removeItem:item];
                 }
+                
             }else{
                 //set
-                objc_setAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
+                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                 lastLabel.backgroundColor = [UIColor grayColor];
             }
         }
@@ -184,12 +187,24 @@ static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
 #pragma mark ======= Notifications =======
 
 - (void)textFieldTextDidChanged{
-    UILabel *lastLabel = [self.subviews lastObject];
-    BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey);
-    if (selected) {
-        objc_removeAssociatedObjects(lastLabel);
-        objc_setAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey, @(NO), OBJC_ASSOCIATION_RETAIN);
-        lastLabel.backgroundColor = [UIColor colorWithRed:214/255.0 green:235/255.0 blue:253/255.0 alpha:1];
+    if (self.dataArray.count>0) {
+        UILabel *lastLabel;
+        if (CustomSearchBarStyleMultipleLines == self.searchBarstyle) {
+            lastLabel  = [self.subviews lastObject];
+        }else{
+            lastLabel  = [self.scrollView.subviews lastObject];
+        }
+        BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey);
+        NSLog(@"lastLabelxxxx:%@",lastLabel);
+        if (self.textField.text.length>0) {
+            //判断字数是否为0
+            if (selected) {
+//                objc_removeAssociatedObjects(lastLabel);
+                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, @(NO), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                lastLabel.backgroundColor = [UIColor colorWithRed:214/255.0 green:235/255.0 blue:253/255.0 alpha:1];
+            }
+        }
     }
     id delegate = self.delegate;
     if (delegate && [delegate respondsToSelector:@selector(customSearchBar:textDidChange:)]) {
@@ -248,7 +263,6 @@ static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
     }];
      __block CGFloat left = 12;
     __block CGFloat top = 44/2-25/2;
-    
     [self.dataArray enumerateObjectsUsingBlock:^(id<CustomSearchInputItemProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         CGFloat labelWidth = [obj.inputItemtitle widthForFont:[UIFont systemFontOfSize:14]]+30;
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(left, top, labelWidth, 25)];

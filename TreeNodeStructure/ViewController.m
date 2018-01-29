@@ -69,12 +69,12 @@
     //数据处理
     BaseTreeNode *baseNode = [[BaseTreeNode alloc]init];
     baseNode.fatherNode = baseNode;
-    for (int i = 0; i<10; i++) {
-        if (i<8) {
+    for (int i = 0; i<20; i++) {
+        if (i<18) {
             OrganizationNode *simpleNode = [[OrganizationNode alloc]init];
             simpleNode.fatherNode = baseNode;
             simpleNode.title = [NSString stringWithFormat:@"部门%d",i];
-            for (int j = 0; j<5; j++) {
+            for (int j = 0; j<15; j++) {
                 SinglePersonNode *personNode = [[SinglePersonNode alloc]init];
                 personNode.fatherNode = simpleNode;
                 personNode.nodeHeight = 60;
