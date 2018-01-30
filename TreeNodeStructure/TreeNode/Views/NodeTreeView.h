@@ -54,6 +54,16 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
  开启手动刷新,默认是自动刷新
  */
 @property (nonatomic, assign,getter=isManualRefresh) BOOL manualRefresh;
+
+/**
+ 开启自动刷新，默认是手动刷新
+ 
+ 自动刷新多用于本地固定数据源
+ 
+ 手动刷新多用于数据源需要由网络请求得到的情景
+ */
+@property (nonatomic, assign,getter=isAutoRefresh) BOOL autoRefresh;
+
 /**
  代理
  */

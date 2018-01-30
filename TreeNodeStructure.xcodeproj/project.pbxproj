@@ -26,7 +26,6 @@
 		169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F244D2017106D00793E22 /* OrganizationNodeView.m */; };
 		169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F2450201736F500793E22 /* BreadcrumbHeaderView.m */; };
 		169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */; };
-		169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,8 +87,6 @@
 		169F2450201736F500793E22 /* BreadcrumbHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BreadcrumbHeaderView.m; sourceTree = "<group>"; };
 		169F245220173F5500793E22 /* TreeOrganizationDisplayCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TreeOrganizationDisplayCell.h; sourceTree = "<group>"; };
 		169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TreeOrganizationDisplayCell.m; sourceTree = "<group>"; };
-		169F245C20187C2500793E22 /* SearchByOrganizationInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchByOrganizationInfoCell.h; sourceTree = "<group>"; };
-		169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchByOrganizationInfoCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +171,6 @@
 		16340A4B20204BDE0026E47F /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				169F245C20187C2500793E22 /* SearchByOrganizationInfoCell.h */,
-				169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */,
 				169F244F201736F500793E22 /* BreadcrumbHeaderView.h */,
 				169F2450201736F500793E22 /* BreadcrumbHeaderView.m */,
 			);
@@ -420,7 +415,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */,
-				169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */,
 				169F24002016CECE00793E22 /* ViewController.m in Sources */,
 				169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */,
 				169F240B2016CECE00793E22 /* main.m in Sources */,

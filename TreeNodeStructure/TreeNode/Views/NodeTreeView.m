@@ -10,19 +10,19 @@
 #import "AssistMicros.h"
 
 #pragma mark 判断树在某一节点是否应该收起
-static inline bool TreeShouldFoldAtNode(BOOL manualRefresh, id<NodeModelProtocol> node){
+static inline bool TreeShouldFoldAtNode(BOOL autoRefresh, id<NodeModelProtocol> node){
     BOOL shouldFold;
-    if (manualRefresh) {//手动刷新
+    if (autoRefresh) {//自动刷新
         if (node.isExpand) {
-            shouldFold =  NO;
-        }else{
             shouldFold = YES;
+        }else{
+            shouldFold =  NO;
         }
-    }else{  //自动刷新
+    }else{  //手动刷新刷新
         if (node.isExpand) {
-            shouldFold = YES;
-        }else{
             shouldFold =  NO;
+        }else{
+            shouldFold = YES;
         }
     }
     return shouldFold;
@@ -192,15 +192,15 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }else{
         node = self.allNodes[indexPath.row];
     }
-    if (self.manualRefresh) {
-        if (node.subNodes.count>0) {
-            //手动刷新，需要第一时间改变node的展开状态,由外界控制刷新时机和RowAnimation刷新动画
-            node.expand = !node.expand;
-        }
-    }else{
+    if (self.autoRefresh) {
         if (node.subNodes.count>0) {
             //自动刷新，不需要立马改变node的展开状态，RowAnimation刷新动画是固定的
             [self reloadTreeViewWithNode:node];
+        }
+    }else{
+        if (node.subNodes.count>0) {
+            //手动刷新，需要第一时间改变node的展开状态,由外界控制刷新时机和RowAnimation刷新动画
+            node.expand = !node.expand;
         }
     }
     //告知代理
@@ -245,7 +245,7 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
             }else{
                 NSUInteger beginPosition = [self.allNodes indexOfObject:node] + 1;
                 NSUInteger endPosition;
-                if (TreeShouldFoldAtNode(self.manualRefresh, node)) {//需要收起所有子节点
+                if (TreeShouldFoldAtNode(self.autoRefresh, node)) {//需要收起所有子节点
                     id<NodeModelProtocol> fatherNode = node.fatherNode;
                     if (fatherNode!=nil && fatherNode != node) {//有父节点，并且自身不是根节点，获取跟该node节点在同一级别下的下一兄弟节点，这之间的所有元素都删除掉
                         if (node.fatherNode.subNodes.lastObject == node) {//该node节点是不是最后一个节点
@@ -270,8 +270,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
                 }
                 NSRange range = NSMakeRange(beginPosition, endPosition-beginPosition+1);
                 NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
-                if (TreeShouldFoldAtNode(self.manualRefresh, node)) {//node本身处于展开状态,此时应该收起来，同时收起它的所有子节点,并且将所有展开的子节点的expand值变为NO
-                    if (!self.manualRefresh) {
+                if (TreeShouldFoldAtNode(self.autoRefresh, node)) {//node本身处于展开状态,此时应该收起来，同时收起它的所有子节点,并且将所有展开的子节点的expand值变为NO
+                    if (self.autoRefresh) {
                         node.expand = !node.expand;
                     }
                     RecursiveFoldAllSubnodesAtNode(node);
@@ -281,7 +281,7 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
                     [self.allNodes removeObjectsAtIndexes:set];
                     [_tableview deleteRowsAtIndexPaths:indexPathes withRowAnimation:animation];
                 }else{              //node本身处于收起来的状态,此时应该展开
-                    if (!self.manualRefresh) {
+                    if (self.autoRefresh) {
                         node.expand = !node.expand;
                     }
                     self.frame = CGRectMake(0, 0, self.frame.size.width,node.currentTreeHeight);//self.frame.size.height+node.subTreeHeight

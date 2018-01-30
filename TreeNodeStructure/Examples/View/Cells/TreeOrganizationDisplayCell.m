@@ -104,7 +104,6 @@
 - (NodeTreeView *)treeView{
     if (!_treeView) {
         _treeView = [[NodeTreeView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, self.frame.size.height) treeViewStyle:self.treeStyle];
-        _treeView.manualRefresh = YES;//手动刷新
         _treeView.treeDelegate = self;
     }
     return _treeView;
