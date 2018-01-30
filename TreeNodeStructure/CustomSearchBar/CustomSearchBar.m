@@ -1,6 +1,6 @@
 //
 //  CustomSearchBar.m
-//  仿QQ添加讨论组
+//  CustomSearchBar
 //
 //  Created by ccSunday on 2018/1/25.
 //  Copyright © 2018年 ccSunday. All rights reserved.
@@ -8,16 +8,19 @@
 
 #import "CustomSearchBar.h"
 #import <objc/runtime.h>
-#import "UIView+Category.h"
 
 CGFloat margin = 12;//元素间距与边界间距均为12
 CGFloat cellHeight = 44;
+
+#pragma mark ExtendTextFieldDelegate
 
 @protocol ExtendTextFieldDelegate <UITextFieldDelegate>
 @optional
 /**点击了删除键 */
 - (void)textFieldDidDeleteBackward:(UITextField *)textField;
 @end
+
+#pragma mark UITextField + DeleteBackward
 
 @interface UITextField (DeleteBackward)
 @property (nonatomic, assign) id<ExtendTextFieldDelegate>delegate;
@@ -39,12 +42,12 @@ CGFloat cellHeight = 44;
 }
 @end
 
-
-@interface NSString (StringSize)
+#pragma mark NSString + _StringSize
+@interface NSString (_StringSize)
 - (CGFloat)widthForFont:(UIFont *)font;
 @end
 
-@implementation NSString (StringSize)
+@implementation NSString (_StringSize)
 - (CGFloat)widthForFont:(UIFont *)font {
     CGSize size = [self sizeForFont:font size:CGSizeMake(HUGE, HUGE) mode:NSLineBreakByWordWrapping];
     return size.width;
@@ -76,22 +79,141 @@ CGFloat cellHeight = 44;
 
 @end
 
+#pragma mark UIView + _FrameExtension
+@interface UIView (_FrameExtension)
+#pragma mark - 设置frame
+@property (nonatomic, assign) CGFloat top;
+@property (nonatomic, assign) CGFloat bottom;
+@property (nonatomic, assign) CGFloat left;
+@property (nonatomic, assign) CGFloat right;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat centerX;
+@property (nonatomic, assign) CGFloat centerY;
+@property (nonatomic, assign) CGSize size;
+@end
+
+@implementation UIView (_FrameExtension)
+
+- (void)setTop:(CGFloat)top{
+    if (self.top != top) {
+        self.frame = CGRectMake(self.left, top, self.width, self.height);
+    }
+}
+
+- (CGFloat)top{
+    return self.frame.origin.y;
+}
+
+- (void)setBottom:(CGFloat)bottom {
+    if (self.bottom != bottom) {
+        self.frame = CGRectMake(self.left, bottom - self.height, self.width, self.height);
+    }
+}
+
+- (CGFloat)bottom {
+    return self.frame.origin.y + self.frame.size.height;
+}
+
+- (void)setLeft:(CGFloat)left{
+    if (self.left != left) {
+        self.frame = CGRectMake(left, self.top, self.width, self.height);
+    }
+}
+
+- (CGFloat)left{
+    return self.frame.origin.x;
+}
+
+- (void)setRight:(CGFloat)right {
+    if (self.right != right) {
+        self.frame = CGRectMake(self.right - self.width, self.top, self.width, right);
+    }
+}
+
+- (CGFloat)right {
+    return self.frame.origin.x + self.frame.size.width;
+}
+
+- (void)setWidth:(CGFloat)width
+{
+    if (self.width != width) {
+        self.frame = CGRectMake(self.left, self.top, width, self.height);
+    }
+}
+
+- (CGFloat)width
+{
+    return self.frame.size.width;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+    if (self.height != height) {
+        self.frame = CGRectMake(self.left, self.top, self.width, height);
+    }
+}
+
+- (CGFloat)height
+{
+    return self.frame.size.height;
+}
+
+- (void)setCenterX:(CGFloat)centerX
+{
+    CGPoint center = self.center;
+    center.x = centerX;
+    self.center = center;
+}
+
+- (CGFloat)centerX
+{
+    return self.center.x;
+}
+
+- (void)setCenterY:(CGFloat)centerY
+{
+    CGPoint center = self.center;
+    center.y = centerY;
+    self.center = center;
+}
+
+- (CGFloat)centerY
+{
+    return self.center.y;
+}
+
+- (void)setSize:(CGSize)size
+{
+    CGRect frame = self.frame;
+    frame.size = size;
+    self.frame = frame;
+}
+
+- (CGSize)size
+{
+    return self.frame.size;
+}
+@end
+
+#pragma mark CustomSearchBar
+
 @interface CustomSearchBar()<ExtendTextFieldDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
-@property (nonatomic, assign) CustomSearchBarStyle searchBarstyle;
+@property (nonatomic, strong) UIImageView *leftImgView;
 
-@property (nonatomic, strong) NSMutableArray<id<CustomSearchInputItemProtocol>> *dataArray;
+@property (nonatomic, assign) CustomSearchBarStyle searchBarstyle;
 
 @end
 
 @implementation CustomSearchBar
 
-//static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
-static char DeleteBackwardItemSelectedKey;
+static void *DeleteBackwardItemSelectedKey = &DeleteBackwardItemSelectedKey;
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -161,10 +283,8 @@ static char DeleteBackwardItemSelectedKey;
             }else{
                  lastLabel = [self.subviews lastObject];
             }
-            NSLog(@"lastLabel:%@",lastLabel);
-
             //get if selected
-            BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey);
+            BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey);
             if (selected) {
                 [lastLabel removeFromSuperview];
                 id delegate = self.delegate;
@@ -174,10 +294,9 @@ static char DeleteBackwardItemSelectedKey;
                 if (delegate && [delegate respondsToSelector:@selector(customSearchBar:removeItem:)]) {
                     [delegate customSearchBar:self removeItem:item];
                 }
-                
             }else{
                 //set
-                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                objc_setAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey, @(YES), OBJC_ASSOCIATION_RETAIN);
                 lastLabel.backgroundColor = [UIColor grayColor];
             }
         }
@@ -187,24 +306,12 @@ static char DeleteBackwardItemSelectedKey;
 #pragma mark ======= Notifications =======
 
 - (void)textFieldTextDidChanged{
-    if (self.dataArray.count>0) {
-        UILabel *lastLabel;
-        if (CustomSearchBarStyleMultipleLines == self.searchBarstyle) {
-            lastLabel  = [self.subviews lastObject];
-        }else{
-            lastLabel  = [self.scrollView.subviews lastObject];
-        }
-        BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey);
-        NSLog(@"lastLabelxxxx:%@",lastLabel);
-        if (self.textField.text.length>0) {
-            //判断字数是否为0
-            if (selected) {
-//                objc_removeAssociatedObjects(lastLabel);
-                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                objc_setAssociatedObject(lastLabel, &DeleteBackwardItemSelectedKey, @(NO), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                lastLabel.backgroundColor = [UIColor colorWithRed:214/255.0 green:235/255.0 blue:253/255.0 alpha:1];
-            }
-        }
+    UILabel *lastLabel = [self.subviews lastObject];
+    BOOL selected = (BOOL)objc_getAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey);
+    if (selected) {
+        objc_removeAssociatedObjects(lastLabel);
+        objc_setAssociatedObject(lastLabel, DeleteBackwardItemSelectedKey, @(NO), OBJC_ASSOCIATION_RETAIN);
+        lastLabel.backgroundColor = [UIColor colorWithRed:214/255.0 green:235/255.0 blue:253/255.0 alpha:1];
     }
     id delegate = self.delegate;
     if (delegate && [delegate respondsToSelector:@selector(customSearchBar:textDidChange:)]) {
@@ -222,21 +329,36 @@ static char DeleteBackwardItemSelectedKey;
 }
 
 #pragma mark  追加单个元素
-- (void)addItem:(id<CustomSearchInputItemProtocol>)item{
-    [self.dataArray addObject:item];
-    [self reloadSearchBar];
+- (BOOL)addItem:(id<CustomSearchInputItemProtocol>)item{
+    if (![self.dataArray containsObject:item]) {
+        if ([self reachTheLimit]) {
+            return NO;
+        }
+        [self.dataArray addObject:item];
+        [self reloadSearchBar];
+        return YES;
+    }else{
+        return NO;
+    }
 }
 
 #pragma mark  从数组中追加多个元素
-- (void)addItemFromArray:(NSArray <id<CustomSearchInputItemProtocol>> *)items{
+- (BOOL)addItemFromArray:(NSArray <id<CustomSearchInputItemProtocol>> *)items{
+    if ([self reachTheLimit]) {
+        return NO;
+    }
+    //存在问题
     [self.dataArray addObjectsFromArray:items];
     [self reloadSearchBar];
+    return YES;
 }
 
 #pragma mark  移除单个元素
 - (void)removeItem:(id<CustomSearchInputItemProtocol>)item{
-    [self.dataArray removeObject:item];
-    [self reloadSearchBar];
+    if ([self.dataArray containsObject:item]) {
+        [self.dataArray removeObject:item];
+        [self reloadSearchBar];
+    }
 }
 
 #pragma mark  从数组中移除多个元素
@@ -255,6 +377,18 @@ static char DeleteBackwardItemSelectedKey;
     }
 }
 
+#pragma mark 判断有没有达到上限
+- (BOOL)reachTheLimit{
+    id dataSource = self.dataSource;
+    if (dataSource && [dataSource respondsToSelector:@selector(maxInputItemsOfCustomSearchBar:)]) {
+        NSInteger maxItems = [dataSource maxInputItemsOfCustomSearchBar:self];
+        if (self.dataArray.count == maxItems) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark 刷新单行searchBar的布局
 - (void)resetSingleLineSearchBar{
     //codes here:
@@ -263,6 +397,7 @@ static char DeleteBackwardItemSelectedKey;
     }];
      __block CGFloat left = 12;
     __block CGFloat top = 44/2-25/2;
+    
     [self.dataArray enumerateObjectsUsingBlock:^(id<CustomSearchInputItemProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         CGFloat labelWidth = [obj.inputItemtitle widthForFont:[UIFont systemFontOfSize:14]]+30;
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(left, top, labelWidth, 25)];
@@ -323,6 +458,10 @@ static char DeleteBackwardItemSelectedKey;
     _placeHolder = placeHolder;
     self.textField.placeholder = _placeHolder;
 }
+- (void)setSearchIcon:(NSString *)searchIcon{
+    _searchIcon = searchIcon;
+    self.leftImgView.image = [UIImage imageNamed:searchIcon];
+}
 
 -(NSMutableArray<id<CustomSearchInputItemProtocol>> *)dataArray{
     if (!_dataArray) {
@@ -354,6 +493,15 @@ static char DeleteBackwardItemSelectedKey;
         _scrollView.backgroundColor = [UIColor whiteColor];
     }
     return _scrollView;
+}
+
+- (UIImageView *)leftImgView{
+    if (!_leftImgView) {
+        _leftImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 44, 44)];
+        _leftImgView.backgroundColor = [UIColor clearColor];
+        _leftImgView.contentMode = UIViewContentModeCenter;
+    }
+    return _leftImgView;
 }
 
 #pragma mark ======= Others =======

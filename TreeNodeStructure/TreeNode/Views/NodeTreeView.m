@@ -8,12 +8,66 @@
 
 #import "NodeTreeView.h"
 
+#pragma mark 判断树在某一节点是否应该收起
+static inline bool TreeShouldFoldAtNode(BOOL manualRefresh, id<NodeModelProtocol> node){
+    BOOL shouldFold;
+    if (manualRefresh) {//手动刷新
+        if (node.isExpand) {
+            shouldFold =  NO;
+        }else{
+            shouldFold = YES;
+        }
+    }else{  //自动刷新
+        if (node.isExpand) {
+            shouldFold = YES;
+        }else{
+            shouldFold =  NO;
+        }
+    }
+    return shouldFold;
+}
+
+static inline void RecursiveInitializeAllNodesWithRootNode(NSMutableArray *allNodes,id<NodeModelProtocol>rootNode){
+    if (rootNode.expand == NO || rootNode.subNodes.count == 0) {//节点处于收起状态，或者节点没有子节点，则退出
+        return;
+    }else{
+        if (allNodes.count == 0) {
+            [allNodes addObjectsFromArray:rootNode.subNodes];
+        }else{
+            NSUInteger beginPosition = [allNodes indexOfObject:rootNode] + 1;
+            NSUInteger endPosition = beginPosition + rootNode.subNodes.count - 1;
+            NSRange range = NSMakeRange(beginPosition, endPosition-beginPosition+1);
+            NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
+            [allNodes insertObjects:rootNode.subNodes atIndexes:set];
+        }
+        for (id<NodeModelProtocol>subNode in rootNode.subNodes) {
+            rootNode = subNode;
+            RecursiveInitializeAllNodesWithRootNode(allNodes, rootNode);
+        }
+    }
+}
+
+static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
+    if (node.subNodes.count>0) {
+        [node.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.isExpand) {
+                obj.expand = NO;
+                RecursiveFoldAllSubnodesAtNode(node);
+            }
+        }];
+    }else{
+        return;
+    }
+}
+
+#pragma mark NodeTreeViewCell
 @interface NodeTreeViewCell:UITableViewCell
 
 @property (nonatomic,strong)id<NodeViewProtocol>nodeView;
 
 @end
 
+#pragma mark NodeTreeView
 @interface NodeTreeView ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableview;
@@ -25,6 +79,7 @@
 @property (nonatomic, assign) NodeTreeViewStyle treeViewStyle;
 
 @end
+
 
 @implementation NodeTreeView
 
@@ -39,7 +94,13 @@
 - (instancetype)initWithFrame:(CGRect)frame treeViewStyle:(NodeTreeViewStyle)style{
     if (self = [super initWithFrame:frame]) {
         self.treeViewStyle = style;
+        self.alwaysBounceVertical = NO;
+        self.bounces = YES;
+        self.showsHorizontalScrollIndicator = YES;
+        self.backgroundColor = [UIColor whiteColor];
+        self.scrollEnabled = self.treeViewStyle == NodeTreeViewStyleExpansion;
         [self addSubview:self.tableview];
+        
     }
     return self;
 }
@@ -101,14 +162,22 @@
         node = self.allNodes[indexPath.row];
     }
 #warning 此处应该根据是否需要手动刷新来执行相对应的代理事件
-    if (self.treeDelegate) {
-        [self.treeDelegate nodeTreeView:self didSelectNode:node];
-    }
-    if (!self.manualRefresh) {
+    //需要区分手动刷新还是自动刷新
+    if (self.manualRefresh) {//手动刷新，需要第一时间改变node的展开状态
+        if (node.subNodes.count>0) {
+            node.expand = !node.expand;
+        }
+    }else{
         if (node.subNodes.count>0) {
             [self reloadTreeViewWithNode:node];
         }
     }
+    if (self.treeDelegate) {
+        id treeDelegate = self.treeDelegate;
+        if ([treeDelegate respondsToSelector:@selector(nodeTreeView:didSelectNode:)]) {
+            [treeDelegate nodeTreeView:self didSelectNode:node];
+        }
+    }    
 }
 
 #pragma mark ======== Custom Delegate ========
@@ -128,24 +197,27 @@
 - (void)reloadTreeViewWithNode:(id<NodeModelProtocol>_Nonnull)node RowAnimation:(UITableViewRowAnimation)animation{
     if (NodeTreeViewStyleBreadcrumbs == self.treeViewStyle) {
         self.frame = CGRectMake(0, 0, self.frame.size.width, node.subTreeHeight);
+        _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+        //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
         self.currentNode = node;
-        _tableview.frame = self.bounds;
         //更改数据源
         [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
     }else{
         if (self.allNodes.count == 0) {//初始为0，为根节点，最好增加属性判断一下是不是根节点
-            [self.allNodes addObjectsFromArray:node.subNodes];
-            self.frame = CGRectMake(0, 0, self.frame.size.width, node.subTreeHeight);
-            _tableview.frame = self.bounds;
+            //此处应该判断节点有没有展开，有的话，需要将子节点加入进去，进行递归。
+            RecursiveInitializeAllNodesWithRootNode(self.allNodes, node);
+            //此处应该判断有没有展开
+            self.frame = CGRectMake(0, 0, self.frame.size.width, node.currentTreeHeight);
+            _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+            //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
             [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
         }else{
             if (node.subNodes.count == 0) {//没有子节点，不需要展开也不需要收起
-                NSLog(@"点击了叶子节点");
                 [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
             }else{
                 NSUInteger beginPosition = [self.allNodes indexOfObject:node] + 1;
                 NSUInteger endPosition;
-                if (node.isExpand) {//需要收起所有子节点
+                if (TreeShouldFoldAtNode(self.manualRefresh, node)) {//需要收起所有子节点
                     id<NodeModelProtocol> fatherNode = node.fatherNode;
                     if (fatherNode!=nil && fatherNode != node) {//有父节点，并且自身不是根节点，获取跟该node节点在同一级别下的下一兄弟节点，这之间的所有元素都删除掉
                         if (node.fatherNode.subNodes.lastObject == node) {//该node节点是不是最后一个节点
@@ -157,7 +229,6 @@
                     }else{
                         return;
                     }
-                    
                 }else{//需要展开
                     endPosition = beginPosition + node.subNodes.count - 1;
                 }
@@ -171,22 +242,24 @@
                 }
                 NSRange range = NSMakeRange(beginPosition, endPosition-beginPosition+1);
                 NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
-                if (node.isExpand) {//node本身处于展开状态,此时应该收起来，同时收起它的所有子节点,并且将所有展开的子节点的expand值变为NO
-                    node.expand = !node.expand;
-                    [self foldAllSubnodesOfNode:node];
-                    __block NSUInteger deleteHeight = 0;
-                    for (NSUInteger i = beginPosition; i<endPosition; i++) {
-                        id<NodeModelProtocol> deleteNode = self.allNodes[i];
-                        deleteHeight +=deleteNode.nodeHeight;
+                if (TreeShouldFoldAtNode(self.manualRefresh, node)) {//node本身处于展开状态,此时应该收起来，同时收起它的所有子节点,并且将所有展开的子节点的expand值变为NO
+                    if (!self.manualRefresh) {
+                        node.expand = !node.expand;
                     }
-                    self.frame = CGRectMake(0, 0, self.frame.size.width,self.frame.size.height-deleteHeight);//?self.frame.size.height-node.subTreeHeight
-                    _tableview.frame = self.bounds;
+                    RecursiveFoldAllSubnodesAtNode(node);
+                    self.frame = CGRectMake(0, 0, self.frame.size.width,node.currentTreeHeight);//self.frame.size.height-deleteHeight
+                    _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+                    //self.contentSize = CGSizeMake(0, self.frame.size.height+12);
                     [self.allNodes removeObjectsAtIndexes:set];
                     [_tableview deleteRowsAtIndexPaths:indexPathes withRowAnimation:animation];
                 }else{              //node本身处于收起来的状态,此时应该展开
-                    node.expand = !node.expand;
-                    self.frame = CGRectMake(0, 0, self.frame.size.width,self.frame.size.height+node.subTreeHeight);//self.frame.size.height+node.subTreeHeight
-                    _tableview.frame = self.bounds;
+                    if (!self.manualRefresh) {
+                        node.expand = !node.expand;
+                    }
+                    self.frame = CGRectMake(0, 0, self.frame.size.width,node.currentTreeHeight);//self.frame.size.height+node.subTreeHeight
+                    _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+
+                    //self.contentSize = CGSizeMake(0, self.frame.size.height+12);
                     [self.allNodes insertObjects:node.subNodes atIndexes:set];
                     [_tableview insertRowsAtIndexPaths:indexPathes withRowAnimation:animation];
                 }
@@ -194,21 +267,6 @@
         }
     }
 }
-
-#pragma mark 收起所有子节点
-- (void)foldAllSubnodesOfNode:(id<NodeModelProtocol>)node{
-    if (node.subNodes.count>0) {
-        [node.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (obj.isExpand) {
-                obj.expand = NO;
-                [self foldAllSubnodesOfNode:obj];
-            }
-        }];
-    }else{
-        return;
-    }
-}
-
 
 - (id<NodeViewProtocol>_Nonnull)nodeViewForNode:(id<NodeModelProtocol>_Nonnull)node{
     NSInteger index;
@@ -244,11 +302,12 @@
 
 @end
 
+
 @implementation NodeTreeViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;//UITableViewCellSelectionStyleNone
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }

@@ -7,8 +7,33 @@
 //
 
 #import "BaseTreeNode.h"
+CGFloat treeHeight;
+#pragma mark 获取根节点
+static inline id<NodeModelProtocol>RecursiveGetRootNodeWithNode(id<NodeModelProtocol> node){
+    if (node.fatherNode == node) {//node != nil && node.fatherNode != nil &&
+        node.expand = YES;
+        return node;
+    }else{
+        node = node.fatherNode;
+        return  RecursiveGetRootNodeWithNode(node);
+    }
+}
+
+#pragma mark 根据根节点获取树的高度
+static inline void RecursiveCalculateTreeHeightWithRootNode(id<NodeModelProtocol> rootNode){
+    if (rootNode.subNodes.count == 0||!rootNode.isExpand) {//叶子节点
+        return ;
+    }
+    if (!isnan(rootNode.subTreeHeight)) {
+        treeHeight += rootNode.subTreeHeight;
+    }
+    for (id<NodeModelProtocol>obj in rootNode.subNodes) {
+        RecursiveCalculateTreeHeightWithRootNode(obj);
+    }
+}
 
 @implementation BaseTreeNode
+
 @synthesize
 subNodes = _subNodes,
 nodeHeight = _nodeHeight,
@@ -31,96 +56,44 @@ currentTreeHeight = _currentTreeHeight;
 
 - (CGFloat)subTreeHeight{
     if (!_subTreeHeight) {
-        __block CGFloat tempSubTreeHeight;
-        [self.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGFloat tempSubTreeHeight = 0;
+        for (id<NodeModelProtocol>  _Nonnull obj in self.subNodes) {
             tempSubTreeHeight += obj.nodeHeight;
-        }];
+        }
         _subTreeHeight = tempSubTreeHeight;
     }
     return _subTreeHeight;
 }
 
 - (CGFloat)currentTreeHeight{
-    _currentTreeHeight =  [self getCurrentTreeHeightWithNode:self];
+    treeHeight = _currentTreeHeight = 0;
+    if (self.fatherNode) {
+        id<NodeModelProtocol> rootNode = RecursiveGetRootNodeWithNode(self);
+        if (rootNode == nil) {
+            NSLog(@"未获取到rootNode");
+        }else{
+            RecursiveCalculateTreeHeightWithRootNode(rootNode);
+            _currentTreeHeight = treeHeight;
+        }
+    }   
     return _currentTreeHeight;
 }
 
-- (CGFloat)getCurrentTreeHeightWithNode:(id<NodeModelProtocol>)node{
-    id<NodeModelProtocol> rootNode = [self getRootNode:node];
-//    NSLog(@"rootNode:%@",rootNode);
-    return [self getTreeHeightAtFatherNode:rootNode];
-    
-    
-    
-    CGFloat treeHeight;
-    if (node == node.fatherNode||node.fatherNode == nil) {
-        return node.subTreeHeight;
-    }else{//自身不等于父节点
-        if (node.isExpand) {
-            treeHeight = node.subTreeHeight;
-        }else{
-            treeHeight = 0;
-        }
-        
-        
-        __block CGFloat otherHeight = 0;
-        [node.fatherNode.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {//兄弟节点的孙子节点，也有可能处于展开状态，需要遍历到最内层
-            if (obj.isExpand && obj!= node) {
-                //此处在继续遍历obj的所有子节点，如果仍然有展开的，则继续相加，直至没有展开的
-                
-                otherHeight += obj.subTreeHeight;
-            }
-        }];
-        
-        node = node.fatherNode;
-        return treeHeight + otherHeight + [self getCurrentTreeHeightWithNode:node];
-    }
-}
-
-#warning 高度计算错误
 #pragma mark 根据父节点获取该父节点树的高度，先序遍历树
-- (CGFloat)getTreeHeightAtFatherNode:(id<NodeModelProtocol>)fatherNode{
-    CGFloat treeHeight = 0;
-//    if (fatherNode.subNodes.count == 0||!fatherNode.isExpand) {//叶子节点
-//        return 0;
-//    }else{
-//        for (id<NodeModelProtocol>obj in fatherNode.subNodes) {
-//            if (obj.isExpand) {
-//               treeHeight += [self getTreeHeightAtFatherNode:obj];
-//            }
-//        }
-//        treeHeight = fatherNode.subTreeHeight;
-//        return treeHeight;
-//    }
+- (void)getTreeHeightAtFatherNode:(id<NodeModelProtocol>)fatherNode{
     if (fatherNode.subNodes.count == 0||!fatherNode.isExpand) {//叶子节点
-        return 0;
+        return ;
     }
-    treeHeight = fatherNode.subTreeHeight;
+    if (!isnan(fatherNode.subTreeHeight)) {
+        _currentTreeHeight += fatherNode.subTreeHeight;
+    }
     for (id<NodeModelProtocol>obj in fatherNode.subNodes) {
-        if (obj.isExpand) {
-            NSLog(@"内部height:%f",obj.subTreeHeight);
-            treeHeight += obj.subTreeHeight;
-//            obj.subTreeHeight;//记录该值，加入计算,这个值需要记录下来，或者直接进行添加
-            //递归
-            [self getTreeHeightAtFatherNode:obj];
-        }
-    }
-    return treeHeight;
-    
-}
-
-#pragma mark 获取根节点
-- (id<NodeModelProtocol>)getRootNode:(id<NodeModelProtocol>)node{
-    if (node.fatherNode == node) {
-        node.expand = YES;
-        return node;
-    }else{
-        node = node.fatherNode;
-        return  [self getRootNode:node];
+        [self getTreeHeightAtFatherNode:obj];
     }
 }
 
-- (void)addNode:(id<NodeModelProtocol>)node{
+- (void)addSubNode:(id<NodeModelProtocol>)node{
+    node.fatherNode = self;
     [self.subNodes addObject:node];
 }
 /**
@@ -128,16 +101,18 @@ currentTreeHeight = _currentTreeHeight;
  
  @param nodes nodes数组
  */
-- (void)addNodesFromArray:(NSArray<id<NodeModelProtocol>> *)nodes{
+- (void)addSubNodesFromArray:(NSArray<id<NodeModelProtocol>> *)nodes{
+    [nodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.fatherNode = self;
+    }];
     [self.subNodes addObjectsFromArray:nodes];
-    
 }
 /**
  删除节点
  
  @param node node节点
  */
-- (void)deleteNode:(id<NodeModelProtocol>)node{
+- (void)deleteSubNode:(id<NodeModelProtocol>)node{
     [self.subNodes removeObject:node];
 }
 

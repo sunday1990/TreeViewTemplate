@@ -20,15 +20,12 @@
 		169F243A2016E72000793E22 /* SinglePersonNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24392016E72000793E22 /* SinglePersonNode.m */; };
 		169F24422016FC7000793E22 /* NodeTreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24412016FC7000793E22 /* NodeTreeView.m */; };
 		169F24482017064900793E22 /* SinglePersonNodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24472017064900793E22 /* SinglePersonNodeView.m */; };
-		169F244B201708FE00793E22 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F244A201708FE00793E22 /* TestViewController.m */; };
 		169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F244D2017106D00793E22 /* OrganizationNodeView.m */; };
 		169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F2450201736F500793E22 /* BreadcrumbHeaderView.m */; };
 		169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */; };
 		169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */; };
 		169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24602018862300793E22 /* SinglePersonDisplayCell.m */; };
-		169F24BD2019B2BF00793E22 /* AttributeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24BC2019B2BF00793E22 /* AttributeLabel.m */; };
 		169F24C22019B66F00793E22 /* CustomSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24C12019B66F00793E22 /* CustomSearchBar.m */; };
-		169F24C52019B67C00793E22 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24C42019B67C00793E22 /* UIView+Category.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,8 +74,6 @@
 		169F2444201704CF00793E22 /* NodeViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeViewProtocol.h; sourceTree = "<group>"; };
 		169F24462017064900793E22 /* SinglePersonNodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinglePersonNodeView.h; sourceTree = "<group>"; };
 		169F24472017064900793E22 /* SinglePersonNodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinglePersonNodeView.m; sourceTree = "<group>"; };
-		169F2449201708FE00793E22 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
-		169F244A201708FE00793E22 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		169F244C2017106D00793E22 /* OrganizationNodeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrganizationNodeView.h; sourceTree = "<group>"; };
 		169F244D2017106D00793E22 /* OrganizationNodeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrganizationNodeView.m; sourceTree = "<group>"; };
 		169F244F201736F500793E22 /* BreadcrumbHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreadcrumbHeaderView.h; sourceTree = "<group>"; };
@@ -89,13 +84,9 @@
 		169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchByOrganizationInfoCell.m; sourceTree = "<group>"; };
 		169F245F2018862300793E22 /* SinglePersonDisplayCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinglePersonDisplayCell.h; sourceTree = "<group>"; };
 		169F24602018862300793E22 /* SinglePersonDisplayCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinglePersonDisplayCell.m; sourceTree = "<group>"; };
-		169F24BB2019B2BF00793E22 /* AttributeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeLabel.h; sourceTree = "<group>"; };
-		169F24BC2019B2BF00793E22 /* AttributeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeLabel.m; sourceTree = "<group>"; };
 		169F24BF2019B66F00793E22 /* CustomSearchInputItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSearchInputItemProtocol.h; sourceTree = "<group>"; };
 		169F24C02019B66F00793E22 /* CustomSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSearchBar.h; sourceTree = "<group>"; };
 		169F24C12019B66F00793E22 /* CustomSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSearchBar.m; sourceTree = "<group>"; };
-		169F24C32019B67C00793E22 /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
-		169F24C42019B67C00793E22 /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,10 +144,6 @@
 				169F23FC2016CECE00793E22 /* AppDelegate.m */,
 				169F23FE2016CECE00793E22 /* ViewController.h */,
 				169F23FF2016CECE00793E22 /* ViewController.m */,
-				169F24BB2019B2BF00793E22 /* AttributeLabel.h */,
-				169F24BC2019B2BF00793E22 /* AttributeLabel.m */,
-				169F2449201708FE00793E22 /* TestViewController.h */,
-				169F244A201708FE00793E22 /* TestViewController.m */,
 				169F24012016CECE00793E22 /* Main.storyboard */,
 				169F24042016CECE00793E22 /* Assets.xcassets */,
 				169F24062016CECE00793E22 /* LaunchScreen.storyboard */,
@@ -247,8 +234,6 @@
 		169F24BE2019B2EA00793E22 /* CustomSearchBar */ = {
 			isa = PBXGroup;
 			children = (
-				169F24C32019B67C00793E22 /* UIView+Category.h */,
-				169F24C42019B67C00793E22 /* UIView+Category.m */,
 				169F24C02019B66F00793E22 /* CustomSearchBar.h */,
 				169F24C12019B66F00793E22 /* CustomSearchBar.m */,
 				169F24BF2019B66F00793E22 /* CustomSearchInputItemProtocol.h */,
@@ -389,7 +374,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				169F24C52019B67C00793E22 /* UIView+Category.m in Sources */,
 				169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */,
 				169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */,
 				169F24C22019B66F00793E22 /* CustomSearchBar.m in Sources */,
@@ -398,12 +382,10 @@
 				169F240B2016CECE00793E22 /* main.m in Sources */,
 				169F24422016FC7000793E22 /* NodeTreeView.m in Sources */,
 				169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */,
-				169F24BD2019B2BF00793E22 /* AttributeLabel.m in Sources */,
 				169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */,
 				169F24302016CF6800793E22 /* BaseTreeNode.m in Sources */,
 				169F23FD2016CECE00793E22 /* AppDelegate.m in Sources */,
 				169F243A2016E72000793E22 /* SinglePersonNode.m in Sources */,
-				169F244B201708FE00793E22 /* TestViewController.m in Sources */,
 				169F24372016E6CE00793E22 /* OrganizationNode.m in Sources */,
 				169F24482017064900793E22 /* SinglePersonNodeView.m in Sources */,
 			);

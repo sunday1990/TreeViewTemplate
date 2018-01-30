@@ -30,6 +30,7 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        self.backgroundColor = [UIColor greenColor];
         [self setupSubviews];
     }
     return self;
@@ -55,6 +56,9 @@
         if (personNode.subNodes.count == 0) {
             personNode.selected = !personNode.selected;
         }
+    }else if ([selectNode isMemberOfClass:[OrganizationNode class]]){
+        OrganizationNode *simpleNode = (OrganizationNode *)node;
+        NSLog(@"选中了%@",simpleNode.title);        
     }
     //通过node来刷新headerView，通过对调传给外界
     if (self.selectNode) {
@@ -84,8 +88,8 @@
 
 - (NodeTreeView *)treeView{
     if (!_treeView) {
-        _treeView = [[NodeTreeView alloc]initWithFrame:self.bounds treeViewStyle:NodeTreeViewStyleBreadcrumbs];
-        _treeView.manualRefresh = YES;//手动刷新        
+        _treeView = [[NodeTreeView alloc]initWithFrame:self.bounds treeViewStyle:NodeTreeViewStyleExpansion];
+        _treeView.manualRefresh = YES;//手动刷新
         _treeView.backgroundColor = [UIColor orangeColor];
         _treeView.treeDelegate = self;
     }

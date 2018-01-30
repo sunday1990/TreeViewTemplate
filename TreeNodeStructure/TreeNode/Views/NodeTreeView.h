@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
 
 @end
 
-@interface NodeTreeView : UIView
+@interface NodeTreeView : UIScrollView
 /**
  开启手动刷新,默认是自动刷新
  */
@@ -48,7 +48,6 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
  代理
  */
 @property (nonatomic, assign) id<NodeTreeViewDelegate>_Nonnull treeDelegate;
-
 
 /**
  初始化方法

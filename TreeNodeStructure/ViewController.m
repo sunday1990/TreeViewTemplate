@@ -18,8 +18,11 @@
 #import "SearchByOrganizationInfoCell.h"
 #import "SinglePersonDisplayCell.h"
 
-#import "AttributeLabel.h"
 #import "CustomSearchBar.h"
+
+#import "NodeTreeView.h"
+#import "SinglePersonNodeView.h"
+#import "OrganizationNodeView.h"
 
 #define HEIGHT [UIScreen mainScreen].bounds.size.height
 
@@ -38,7 +41,7 @@
 @end
 
 
-@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,CustomSearchBarDelegate>
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,CustomSearchBarDelegate,NodeTreeViewDelegate>
 /**
  tableView
  */
@@ -62,54 +65,88 @@
 @end
 
 @implementation ViewController
+{
+    BaseTreeNode *_baseNode;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [self.view addSubview:self.tableview];
+    self.view.backgroundColor = [UIColor greenColor];
     //数据处理
     BaseTreeNode *baseNode = [[BaseTreeNode alloc]init];
-    baseNode.fatherNode = baseNode;
-    for (int i = 0; i<20; i++) {
-        if (i<18) {
+    baseNode.fatherNode = baseNode;//父节点等于自身
+    _baseNode = baseNode;
+    for (int i = 0; i<10; i++) {
+        if (i<8) {
             OrganizationNode *simpleNode = [[OrganizationNode alloc]init];
-            simpleNode.fatherNode = baseNode;
+            if (i <3) {
+                simpleNode.expand = YES;
+            }
             simpleNode.title = [NSString stringWithFormat:@"部门%d",i];
-            for (int j = 0; j<15; j++) {
+            for (int j = 0; j<5; j++) {
                 SinglePersonNode *personNode = [[SinglePersonNode alloc]init];
-                personNode.fatherNode = simpleNode;
                 personNode.nodeHeight = 60;
                 personNode.name = [NSString stringWithFormat:@"分部门%d",j];
                 for (int k = 0; k<6; k++) {
                     OrganizationNode *personNode0 = [[OrganizationNode alloc]init];
-                    personNode0.fatherNode = personNode;
                     personNode0.title = [NSString stringWithFormat:@"人员%d",k];
                     personNode0.nodeHeight = 80;
                     for (int m = 0; m<7; m++) {
                         SinglePersonNode *personNode1 = [[SinglePersonNode alloc]init];
-                        personNode1.fatherNode = personNode0;
                         personNode1.nodeHeight = 60;
                         personNode1.name = [NSString stringWithFormat:@"张三%d",m];
                         personNode1.IDNum =@"1003022";
                         personNode1.dePartment =@"资金部-权证部";
-                        
-                        [personNode0.subNodes addObject:personNode1];
+                        [personNode0 addSubNode:personNode1];
                     }
-                    [personNode.subNodes addObject:personNode0];
+                    [personNode addSubNode:personNode0];
                 }
-                [simpleNode.subNodes addObject:personNode];
+                [simpleNode addSubNode:personNode];
             }
-            [baseNode.subNodes addObject:simpleNode];
+            [baseNode addSubNode:simpleNode];
         }else{
             SinglePersonNode *singlePersonNode1 = [[SinglePersonNode alloc]init];
-            singlePersonNode1.fatherNode = baseNode;
             singlePersonNode1.nodeHeight = 60;
             singlePersonNode1.name = [NSString stringWithFormat:@"张三%d",i];
             singlePersonNode1.IDNum =@"1003022";
-            [baseNode.subNodes addObject:singlePersonNode1];
+            [baseNode addSubNode:singlePersonNode1];
         }
     }
+
+    
+//    NodeTreeView *treeView = [[NodeTreeView alloc]initWithFrame:CGRectMake(0, 200, WIDTH, HEIGHT-300) treeViewStyle:NodeTreeViewStyleExpansion];
+//    treeView.treeDelegate = self;
+//    [treeView reloadTreeViewWithNode:baseNode];
+//    treeView.backgroundColor = [UIColor redColor];
+//    [self.view addSubview:treeView];
+//    return;
+    
+    [self.view addSubview:self.tableview];
     self.currentNode = baseNode;
     [self.tableview reloadData];
+}
+
+- (id<NodeViewProtocol>_Nonnull)nodeTreeView:(NodeTreeView *_Nonnull)treeView viewForNode:(id<NodeModelProtocol>_Nonnull)node{
+    id _node = node;
+    if ([_node isMemberOfClass:[SinglePersonNode class]]) {
+        return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
+    }else if([_node isMemberOfClass:[OrganizationNode class]]){
+        return [[OrganizationNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
+    }
+    return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
+}
+
+- (void)nodeTreeView:(NodeTreeView *)treeView didSelectNode:(id<NodeModelProtocol>)node{
+    NSLog(@"选中了节点：%@",node);
+    id _node = node;
+    if ([_node isMemberOfClass:[SinglePersonNode class]]) {
+        SinglePersonNode *personNode = (SinglePersonNode *)_node;
+        if (personNode.subNodes.count == 0) {
+            personNode.selected = !personNode.selected;
+
+            [treeView reloadTreeViewWithNode:personNode];
+        }
+    }
 }
 
 #pragma mark ======== System Delegate ========
@@ -130,8 +167,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    NSLog(@"currentTreeHeight:%f",self.currentNode.currentTreeHeight);
-//    return self.currentNode.currentTreeHeight;
-    return self.currentNode.subTreeHeight;
+    return self.currentNode.currentTreeHeight;
+//    return self.currentNode.subTreeHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -215,8 +252,8 @@
     //更新SinglePersonNodeView
     if ([node isMemberOfClass:[SinglePersonNode class]]) {
         //expand模式下，需要self.currentNode = node
-//        self.currentNode = node;
-        
+        self.currentNode = node;
+
         
         SinglePersonNode *cusNode = (SinglePersonNode *)node;
         cusNode.inputItemtitle = cusNode.name;

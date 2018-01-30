@@ -1,6 +1,6 @@
 //
 //  CustomSearchBar.h
-//  仿QQ添加讨论组
+//  CustomSearchBar
 //
 //  Created by ccSunday on 2018/1/25.
 //  Copyright © 2018年 ccSunday. All rights reserved.
@@ -50,12 +50,29 @@ typedef NS_ENUM(NSUInteger,CustomSearchBarStyle)
  @return 第index下的view视图
  */
 - (UIView *)customSearchBar:(CustomSearchBar *)searchBar viewForItemAtIndex:(NSInteger)index;
+/**
+ 返回最多展示的item数量，默认不进行限制
+ 
+ @param searchBar searchBar description
+ @return 最多展示的item数量
+ */
+- (NSInteger)maxInputItemsOfCustomSearchBar:(CustomSearchBar *)searchBar;
 
 @end
 
 @interface CustomSearchBar : UIView
-
+/**
+ placeholder
+ */
 @property (nonatomic, copy) NSString *placeHolder;
+/**
+ 左侧的图标
+ */
+@property (nonatomic, copy) NSString *searchIcon;
+/**
+ 选中的items
+ */
+@property (nonatomic, strong) NSMutableArray<id<CustomSearchInputItemProtocol>> *dataArray;
 
 @property (nonatomic, assign) id<CustomSearchBarDelegate>delegate;
 
@@ -74,14 +91,14 @@ typedef NS_ENUM(NSUInteger,CustomSearchBarStyle)
 
  @param item item实例
  */
-- (void)addItem:(id<CustomSearchInputItemProtocol>)item;
+- (BOOL)addItem:(id<CustomSearchInputItemProtocol>)item;
 
 /**
  从数组中追加多个元素
 
  @param items item数组
  */
-- (void)addItemFromArray:(NSArray <id<CustomSearchInputItemProtocol>> *)items;
+- (BOOL)addItemFromArray:(NSArray <id<CustomSearchInputItemProtocol>> *)items;
 
 /**
  移除单个元素

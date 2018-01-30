@@ -25,13 +25,13 @@
  
  @param node node节点
  */
-- (void)addNode:(id<NodeModelProtocol>)node;
+- (void)addSubNode:(id<NodeModelProtocol>)node;
 /**
  删除节点
  
  @param node node节点
  */
-- (void)deleteNode:(id<NodeModelProtocol>)node;
+- (void)deleteSubNode:(id<NodeModelProtocol>)node;
 
 @optional
 /**
@@ -42,17 +42,14 @@
  父节点
  */
 @property (nonatomic, weak) id<NodeModelProtocol> fatherNode;
-
-
 /**
-该节点元素对应的子树高度，也就是每一个节点展开后的所有元素的高度之和，
+该节点展开后的所有儿子节点的高度之和
  */
 @property (nonatomic, assign) CGFloat subTreeHeight;
 /**
- 该节点元素对应的当前树的高度，也就是当前节点的所有父节点的子树高度
+ 该节点所在树的当前整体高度
  */
 @property (nonatomic, assign) CGFloat currentTreeHeight;
-
 /**
  在NodeTreeViewStyleExpansion模式下，需要确定该节点是否展开
  */
@@ -62,7 +59,7 @@
 
  @param nodes nodes数组
  */
-- (void)addNodesFromArray:(NSArray<id<NodeModelProtocol>> *)nodes;
+- (void)addSubNodesFromArray:(NSArray<id<NodeModelProtocol>> *)nodes;
 
 @end
 
