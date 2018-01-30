@@ -27,6 +27,7 @@ static inline bool TreeShouldFoldAtNode(BOOL manualRefresh, id<NodeModelProtocol
     return shouldFold;
 }
 
+#pragma mark NodeTreeViewStyleExpansion模式下，初始化数据源，递归的将所有需要展开的节点，加入数据源中
 static inline void RecursiveInitializeAllNodesWithRootNode(NSMutableArray *allNodes,id<NodeModelProtocol>rootNode){
     if (rootNode.expand == NO || rootNode.subNodes.count == 0) {
         return;
@@ -47,6 +48,7 @@ static inline void RecursiveInitializeAllNodesWithRootNode(NSMutableArray *allNo
     }
 }
 
+#pragma mark 递归的将某节点下所有子节点的展开状态置为NO
 static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
     if (node.subNodes.count>0) {
         [node.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -57,6 +59,18 @@ static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
         }];
     }else{
         return;
+    }
+}
+
+#pragma mark 递归的向view的所有子view发送setNeedsLayout消息，进行重新布局
+static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
+    if (view.subviews.count == 0) {
+        return;
+    }else{
+        [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subView, NSUInteger idx, BOOL * _Nonnull stop) {
+            [subView setNeedsLayout];
+            RecursiveLayoutSubviews(subView);
+        }];
     }
 }
 
@@ -165,9 +179,10 @@ static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
     //改变高度
     UIView *nodeView = (UIView *)cell.nodeView;
     nodeView.frame = CGRectMake(nodeView.frame.origin.x, nodeView.frame.origin.y, nodeView.frame.size.width, node.nodeHeight);
+    //递归调用所有子view的layoutSubviews方法，重新布局
+    RecursiveLayoutSubviews(nodeView);
     return cell;
 }
-
 
 #pragma mark Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
