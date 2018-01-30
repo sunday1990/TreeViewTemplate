@@ -43,6 +43,10 @@
  */
 @property (nonatomic, weak) id<NodeModelProtocol> fatherNode;
 /**
+ 该节点相对于根节点处于第几级
+ */
+@property (nonatomic, assign) NSInteger nodeLevel;
+/**
 该节点展开后的所有儿子节点的高度之和
  */
 @property (nonatomic, assign) CGFloat subTreeHeight;

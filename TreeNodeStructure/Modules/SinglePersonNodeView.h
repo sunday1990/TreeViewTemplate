@@ -11,4 +11,5 @@
 #import "SinglePersonNode.h"
 
 @interface SinglePersonNodeView : UIView<NodeViewProtocol>
+
 @end

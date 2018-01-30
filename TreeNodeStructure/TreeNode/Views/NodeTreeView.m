@@ -28,7 +28,7 @@ static inline bool TreeShouldFoldAtNode(BOOL manualRefresh, id<NodeModelProtocol
 }
 
 static inline void RecursiveInitializeAllNodesWithRootNode(NSMutableArray *allNodes,id<NodeModelProtocol>rootNode){
-    if (rootNode.expand == NO || rootNode.subNodes.count == 0) {//节点处于收起状态，或者节点没有子节点，则退出
+    if (rootNode.expand == NO || rootNode.subNodes.count == 0) {
         return;
     }else{
         if (allNodes.count == 0) {
@@ -136,6 +136,7 @@ static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     id<NodeModelProtocol>node;
+    id delegate  = self.treeDelegate;
     if (NodeTreeViewStyleBreadcrumbs == self.treeViewStyle) {
         node = self.currentNode.subNodes[indexPath.row];
     }else{
@@ -143,15 +144,30 @@ static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
     }
     static NSString *CELLID = @"";
     NodeTreeViewCell *cell = [[NodeTreeViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELLID];
-    if (self.treeDelegate) {
+    if (delegate) {
         [cell setNodeView:[self.treeDelegate nodeTreeView:self viewForNode:node]];
     }
     //刷新nodeView
     [cell.nodeView updateNodeViewWithNodeModel:node];
+    //设置缩进
+    if (self.indepent>0) {
+        [cell.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            obj.frame =  CGRectMake(node.nodeLevel * self.indepent, 0, cell.contentView.frame.size.width - node.nodeLevel * self.indepent, obj.frame.size.height);
+        }];
+    }else{
+        if (delegate && [delegate respondsToSelector:@selector(nodeTreeView:indentAtNodeLevel:)]) {
+            CGFloat indentationWidth = [delegate nodeTreeView:self indentAtNodeLevel:node.nodeLevel];
+            [cell.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                obj.frame =  CGRectMake(indentationWidth, 0, cell.contentView.frame.size.width-indentationWidth, obj.frame.size.height);
+            }];
+        }
+    }
+    //改变高度
     UIView *nodeView = (UIView *)cell.nodeView;
     nodeView.frame = CGRectMake(nodeView.frame.origin.x, nodeView.frame.origin.y, nodeView.frame.size.width, node.nodeHeight);
     return cell;
 }
+
 
 #pragma mark Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -27,7 +27,7 @@
 */
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-//        self.backgroundColor = [UIColor orangeColor];
+        self.backgroundColor = [UIColor orangeColor];
         [self setupSubviews];
     }
     return self;
@@ -56,6 +56,7 @@
         _titleLabel.textColor = [UIColor blackColor];
         _titleLabel.font = [UIFont systemFontOfSize:14];
         _titleLabel.textAlignment = NSTextAlignmentLeft;
+
     }
     return _titleLabel;
 }
@@ -64,6 +65,7 @@
     if (!_rightImgView) {
         _rightImgView = [[UIImageView alloc]init];
         _rightImgView.image = [UIImage imageNamed:@"next"];
+
     }
     return _rightImgView;
 }

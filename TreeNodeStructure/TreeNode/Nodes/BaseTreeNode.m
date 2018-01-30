@@ -8,20 +8,22 @@
 
 #import "BaseTreeNode.h"
 CGFloat treeHeight;
+CGFloat tempNodeLevel;
 #pragma mark 获取根节点
 static inline id<NodeModelProtocol>RecursiveGetRootNodeWithNode(id<NodeModelProtocol> node){
-    if (node.fatherNode == node) {//node != nil && node.fatherNode != nil &&
+    if (node.fatherNode == node) {
         node.expand = YES;
         return node;
     }else{
         node = node.fatherNode;
+        tempNodeLevel = tempNodeLevel+1;
         return  RecursiveGetRootNodeWithNode(node);
     }
 }
 
 #pragma mark 根据根节点获取树的高度
 static inline void RecursiveCalculateTreeHeightWithRootNode(id<NodeModelProtocol> rootNode){
-    if (rootNode.subNodes.count == 0||!rootNode.isExpand) {//叶子节点
+    if (rootNode.subNodes.count == 0||!rootNode.isExpand) {
         return ;
     }
     if (!isnan(rootNode.subTreeHeight)) {
@@ -43,7 +45,8 @@ fatherNode = _fatherNode,
 subTreeHeight = _subTreeHeight,
 /*NodeTreeViewStyleExpansion*/
 expand = _expand,
-currentTreeHeight = _currentTreeHeight;
+currentTreeHeight = _currentTreeHeight,
+nodeLevel = _nodeLevel;
 
 - (instancetype)init{
     if (self = [super init]) {
@@ -77,6 +80,16 @@ currentTreeHeight = _currentTreeHeight;
         }
     }   
     return _currentTreeHeight;
+}
+
+- (NSInteger)nodeLevel{
+    if (!_nodeLevel || _nodeLevel == 0) {
+        tempNodeLevel = 0;
+        id<NodeModelProtocol> rootNode = RecursiveGetRootNodeWithNode(self);
+        rootNode.nodeLevel = 0;
+        _nodeLevel = tempNodeLevel;
+    }
+    return _nodeLevel;
 }
 
 #pragma mark 根据父节点获取该父节点树的高度，先序遍历树

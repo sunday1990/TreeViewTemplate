@@ -39,7 +39,7 @@
 */
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-//        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor redColor];
         [self setupSubviews];
     }
     return self;
@@ -73,9 +73,9 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     _selectBtn.frame = CGRectMake(12, self.frame.size.height/2-6, 12, 12);
-    _nameLabel.frame = CGRectMake(12+12+12, self.frame.size.height/2-7, 60, 14);
+    _nameLabel.frame = CGRectMake(12+12+12, 0, 60, self.frame.size.height);
     _IDLabel.frame = CGRectMake(12+12+12+60+12, self.frame.size.height/2-7, 60, 14);
-    _departmentLabel.frame = CGRectMake(12+12+12+60+12+60+12, self.frame.size.height/2-7, 120, 14);
+    _departmentLabel.frame = CGRectMake(12+12+12+60+12+60+12, 0, self.frame.size.width-(12+12+12+60+12+60+12+12), self.frame.size.height);
 }
 
 
@@ -84,6 +84,9 @@
         _nameLabel = [[UILabel alloc]init];
         _nameLabel.font = [UIFont systemFontOfSize:14];
         _nameLabel.textColor = [UIColor blackColor];
+        _nameLabel.numberOfLines = 0;
+        _nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+
     }
     return _nameLabel;
 }
@@ -102,6 +105,8 @@
         _departmentLabel = [[UILabel alloc]init];
         _departmentLabel.font = [UIFont systemFontOfSize:14];
         _departmentLabel.textColor = [UIColor blackColor];
+        _departmentLabel.numberOfLines = 0;
+        _departmentLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return _departmentLabel;
 }

@@ -79,14 +79,11 @@
     for (int i = 0; i<10; i++) {
         if (i<8) {
             OrganizationNode *simpleNode = [[OrganizationNode alloc]init];
-            if (i <3) {
-                simpleNode.expand = YES;
-            }
             simpleNode.title = [NSString stringWithFormat:@"部门%d",i];
             for (int j = 0; j<5; j++) {
                 SinglePersonNode *personNode = [[SinglePersonNode alloc]init];
                 personNode.nodeHeight = 60;
-                personNode.name = [NSString stringWithFormat:@"分部门%d",j];
+                personNode.name = [NSString stringWithFormat:@"%@-分部门%d",simpleNode.title,j];
                 for (int k = 0; k<6; k++) {
                     OrganizationNode *personNode0 = [[OrganizationNode alloc]init];
                     personNode0.title = [NSString stringWithFormat:@"人员%d",k];
@@ -94,7 +91,7 @@
                     for (int m = 0; m<7; m++) {
                         SinglePersonNode *personNode1 = [[SinglePersonNode alloc]init];
                         personNode1.nodeHeight = 60;
-                        personNode1.name = [NSString stringWithFormat:@"张三%d",m];
+                        personNode1.name = [NSString stringWithFormat:@"%@-张三%d",personNode.name,m];
                         personNode1.IDNum =@"1003022";
                         personNode1.dePartment =@"资金部-权证部";
                         [personNode0 addSubNode:personNode1];

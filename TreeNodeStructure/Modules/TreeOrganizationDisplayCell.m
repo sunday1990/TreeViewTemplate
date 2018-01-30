@@ -49,6 +49,14 @@
     return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
 }
 
+- (CGFloat)nodeTreeView:(NodeTreeView *_Nonnull)treeView indentAtNodeLevel:(NSInteger)nodeLevel{
+    if (nodeLevel == 1) {
+        return 0;
+    }else{
+        return 15*nodeLevel;
+    }
+}
+
 - (void)nodeTreeView:(NodeTreeView *_Nonnull)treeView didSelectNode:(id<NodeModelProtocol>_Nonnull)node{
     id selectNode = node;
     if ([selectNode isMemberOfClass:[SinglePersonNode class]]) {
@@ -65,6 +73,8 @@
         self.selectNode((BaseTreeNode *)node);
     }
 }
+
+
 
 #pragma mark ======== Private Methods ========
 
@@ -91,6 +101,7 @@
         _treeView = [[NodeTreeView alloc]initWithFrame:self.bounds treeViewStyle:NodeTreeViewStyleExpansion];
         _treeView.manualRefresh = YES;//手动刷新
         _treeView.backgroundColor = [UIColor orangeColor];
+        _treeView.indepent = 15;
         _treeView.treeDelegate = self;
     }
     return _treeView;

@@ -29,6 +29,15 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
 - (id<NodeViewProtocol>_Nonnull)nodeTreeView:(NodeTreeView *_Nonnull)treeView viewForNode:(id<NodeModelProtocol>_Nonnull)node;
 
 @optional
+
+/**
+ 返回对应级别下的缩进
+
+ @param treeView treeView
+ @param nodeLevel 对应的nodeLevel
+ @return 该level下对应的缩进
+ */
+- (CGFloat)nodeTreeView:(NodeTreeView *_Nonnull)treeView indentAtNodeLevel:(NSInteger)nodeLevel;
 /**
  点击事件回调
 
@@ -48,7 +57,10 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
  代理
  */
 @property (nonatomic, assign) id<NodeTreeViewDelegate>_Nonnull treeDelegate;
-
+/**
+ 统一设置缩进
+ */
+@property (nonatomic, assign) CGFloat indepent;
 /**
  初始化方法
 
