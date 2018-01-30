@@ -205,7 +205,7 @@
 		169F23FA2016CECE00793E22 /* TreeNodeStructure */ = {
 			isa = PBXGroup;
 			children = (
-				169F24432016FD8900793E22 /* Modules */,
+				169F24432016FD8900793E22 /* Examples */,
 				169F242D2016CF5500793E22 /* TreeNode */,
 				169F23FB2016CECE00793E22 /* AppDelegate.h */,
 				169F23FC2016CECE00793E22 /* AppDelegate.m */,
@@ -267,14 +267,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		169F24432016FD8900793E22 /* Modules */ = {
+		169F24432016FD8900793E22 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
 				16340A4820204B910026E47F /* Controller */,
 				16340A4720204B8C0026E47F /* Model */,
 				16340A4620204B810026E47F /* View */,
 			);
-			path = Modules;
+			path = Examples;
 			sourceTree = "<group>";
 		};
 		169F2445201704D400793E22 /* Protocols */ = {

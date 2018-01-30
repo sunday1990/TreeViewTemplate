@@ -46,6 +46,7 @@
 
 #pragma mark ======== Custom Delegate ========
 
+#pragma mark NodeViewProtocol
 - (void)updateNodeViewWithNodeModel:(id<NodeModelProtocol>)node{
     //将node转为该view对应的指定node，然后执行操作
     SinglePersonNode *personNode = (SinglePersonNode *)node;

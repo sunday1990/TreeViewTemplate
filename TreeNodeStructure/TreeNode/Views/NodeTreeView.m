@@ -192,17 +192,18 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }else{
         node = self.allNodes[indexPath.row];
     }
-#warning 此处应该根据是否需要手动刷新来执行相对应的代理事件
-    //需要区分手动刷新还是自动刷新
-    if (self.manualRefresh) {//手动刷新，需要第一时间改变node的展开状态
+    if (self.manualRefresh) {
         if (node.subNodes.count>0) {
+            //手动刷新，需要第一时间改变node的展开状态,由外界控制刷新时机和RowAnimation刷新动画
             node.expand = !node.expand;
         }
     }else{
         if (node.subNodes.count>0) {
+            //自动刷新，不需要立马改变node的展开状态，RowAnimation刷新动画是固定的
             [self reloadTreeViewWithNode:node];
         }
     }
+    //告知代理
     if (self.treeDelegate) {
         id treeDelegate = self.treeDelegate;
         if ([treeDelegate respondsToSelector:@selector(nodeTreeView:didSelectNode:)]) {
@@ -224,23 +225,23 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 - (void)reloadTreeViewWithNode:(id<NodeModelProtocol>_Nonnull)node RowAnimation:(UITableViewRowAnimation)animation{
     if (NodeTreeViewStyleBreadcrumbs == self.treeViewStyle) {
         self.frame = CGRectMake(0, 0, self.frame.size.width, node.subTreeHeight);
-        _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+        _tableview.frame = self.bounds;//self.bounds
         //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
         self.currentNode = node;
         //更改数据源
         [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
     }else{
-        if (self.allNodes.count == 0) {//初始为0，为根节点，最好增加属性判断一下是不是根节点
-            //此处应该判断节点有没有展开，有的话，需要将子节点加入进去，进行递归。
+        if (self.allNodes.count == 0) {
+            //初始化数据源，递归的将所有需要展开的节点，加入数据源中
             RecursiveInitializeAllNodesWithRootNode(self.allNodes, node);
-            //此处应该判断有没有展开
             self.frame = CGRectMake(0, 0, self.frame.size.width, node.currentTreeHeight);
-            _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
+            _tableview.frame = self.bounds;//CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2)
             //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
             [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
         }else{
-            if (node.subNodes.count == 0) {//没有子节点，不需要展开也不需要收起
-                [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
+            if (node.subNodes.count == 0) {//没有子节点，不需要展开也不需要收起，刷新指定cell即可
+                NSIndexPath *selectIndexPath = [NSIndexPath indexPathForRow:[self.allNodes indexOfObject:node]  inSection:0];
+                [self.tableview reloadRowsAtIndexPaths:@[selectIndexPath] withRowAnimation:animation];
             }else{
                 NSUInteger beginPosition = [self.allNodes indexOfObject:node] + 1;
                 NSUInteger endPosition;
