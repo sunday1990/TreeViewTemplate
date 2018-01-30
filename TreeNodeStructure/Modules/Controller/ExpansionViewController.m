@@ -13,7 +13,6 @@
 #import "SinglePersonNode.h"
 
 #import "TreeOrganizationDisplayCell.h"
-#import "SinglePersonDisplayCell.h"
 
 @interface ExpansionViewController ()
 

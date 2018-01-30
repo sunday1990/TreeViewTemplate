@@ -27,7 +27,6 @@
 		169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F2450201736F500793E22 /* BreadcrumbHeaderView.m */; };
 		169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */; };
 		169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */; };
-		169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24602018862300793E22 /* SinglePersonDisplayCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,8 +90,6 @@
 		169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TreeOrganizationDisplayCell.m; sourceTree = "<group>"; };
 		169F245C20187C2500793E22 /* SearchByOrganizationInfoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchByOrganizationInfoCell.h; sourceTree = "<group>"; };
 		169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchByOrganizationInfoCell.m; sourceTree = "<group>"; };
-		169F245F2018862300793E22 /* SinglePersonDisplayCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinglePersonDisplayCell.h; sourceTree = "<group>"; };
-		169F24602018862300793E22 /* SinglePersonDisplayCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinglePersonDisplayCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,8 +167,6 @@
 			children = (
 				169F245220173F5500793E22 /* TreeOrganizationDisplayCell.h */,
 				169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */,
-				169F245F2018862300793E22 /* SinglePersonDisplayCell.h */,
-				169F24602018862300793E22 /* SinglePersonDisplayCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -431,7 +426,6 @@
 				169F240B2016CECE00793E22 /* main.m in Sources */,
 				169F24422016FC7000793E22 /* NodeTreeView.m in Sources */,
 				16340A5020205F3F0026E47F /* BaseViewController.m in Sources */,
-				169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */,
 				16340A4520204B6A0026E47F /* ExpansionViewController.m in Sources */,
 				16340A4220204B5F0026E47F /* BreadcrumbViewController.m in Sources */,
 				169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */,

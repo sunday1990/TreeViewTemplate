@@ -75,15 +75,6 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }
 }
 
-static inline CGFloat RecursiveGetNodeTreeViewWidth(UIView *view){
-    if ([view isMemberOfClass:[NodeTreeView class]]) {
-        return view.frame.size.width;
-    }else{
-        RecursiveLayoutSubviews(view.superview);
-    }
-    return WIDTH;
-}
-
 #pragma mark NodeTreeViewCell
 @interface NodeTreeViewCell:UITableViewCell
 
