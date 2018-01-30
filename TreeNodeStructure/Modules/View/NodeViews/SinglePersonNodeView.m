@@ -39,22 +39,12 @@
 */
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor redColor];
         [self setupSubviews];
     }
     return self;
 }
 
-- (void)setupSubviews{
-    [self addSubview:self.selectBtn];
-    [self addSubview:self.nameLabel];
-    [self addSubview:self.IDLabel];
-    [self addSubview:self.departmentLabel];
-}
-
-- (void)btnSelect:(UIButton *)btn{
-    btn.selected = !btn.selected;
-}
+#pragma mark ======== Custom Delegate ========
 
 - (void)updateNodeViewWithNodeModel:(id<NodeModelProtocol>)node{
     //将node转为该view对应的指定node，然后执行操作
@@ -78,6 +68,20 @@
     _departmentLabel.frame = CGRectMake(12+12+12+60+12+60+12, 0, self.frame.size.width-(12+12+12+60+12+60+12+12), self.frame.size.height);
 }
 
+#pragma mark ======== Private Methods ========
+
+- (void)setupSubviews{
+    [self addSubview:self.selectBtn];
+    [self addSubview:self.nameLabel];
+    [self addSubview:self.IDLabel];
+    [self addSubview:self.departmentLabel];
+}
+
+- (void)btnSelect:(UIButton *)btn{
+    btn.selected = !btn.selected;
+}
+
+#pragma mark ======== Setters && Getters ========
 
 - (UILabel *)nameLabel{
     if (!_nameLabel) {

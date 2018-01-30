@@ -11,7 +11,7 @@
 
 @interface SinglePersonDisplayCell ()
 
-@property (nonatomic, strong) SinglePersonNodeView *SinglePersonNodeView;
+@property (nonatomic, strong) SinglePersonNodeView *singlePersonView;
 
 @end
 
@@ -37,25 +37,24 @@
 }
 
 - (void)setupSubviews{
-    [self addSubview:self.SinglePersonNodeView];
+    [self addSubview:self.singlePersonView];
 }
 
 - (void)layoutSubviews{
     [super layoutSubviews];
-    self.SinglePersonNodeView.frame = self.bounds;
-    
+    self.singlePersonView.frame = self.bounds;
 }
 
 - (void)setModel:(SinglePersonNode *)model{
     _model = model;
-    [self.SinglePersonNodeView updateNodeViewWithNodeModel:model];
+    [self.singlePersonView updateNodeViewWithNodeModel:model];
 }
 
 - (SinglePersonNodeView *)SinglePersonNodeView{
-    if (!_SinglePersonNodeView) {
-        _SinglePersonNodeView = [[SinglePersonNodeView alloc]init];
+    if (!_singlePersonView) {
+        _singlePersonView = [[SinglePersonNodeView alloc]init];
     }
-    return _SinglePersonNodeView;
+    return _singlePersonView;
 }
 
 

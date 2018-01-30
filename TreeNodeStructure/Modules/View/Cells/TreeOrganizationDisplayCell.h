@@ -15,6 +15,8 @@
 @property (nonatomic, strong) BaseTreeNode *node;
 
 @property (nonatomic, copy) void(^selectNode)(BaseTreeNode *node);
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle;
 /**
  刷新node节点对应的树
  */

@@ -12,6 +12,7 @@
 
 typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
 {
+    NodeTreeViewStyleDefault,               //默认形式也就是展开形式
     NodeTreeViewStyleBreadcrumbs,          //面包屑形式
     NodeTreeViewStyleExpansion              //展开形式
 };

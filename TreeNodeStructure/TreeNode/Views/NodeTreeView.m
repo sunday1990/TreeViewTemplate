@@ -7,6 +7,7 @@
 //
 
 #import "NodeTreeView.h"
+#import "AssistMicros.h"
 
 #pragma mark 判断树在某一节点是否应该收起
 static inline bool TreeShouldFoldAtNode(BOOL manualRefresh, id<NodeModelProtocol> node){
@@ -74,6 +75,15 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }
 }
 
+static inline CGFloat RecursiveGetNodeTreeViewWidth(UIView *view){
+    if ([view isMemberOfClass:[NodeTreeView class]]) {
+        return view.frame.size.width;
+    }else{
+        RecursiveLayoutSubviews(view.superview);
+    }
+    return WIDTH;
+}
+
 #pragma mark NodeTreeViewCell
 @interface NodeTreeViewCell:UITableViewCell
 
@@ -111,7 +121,6 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         self.alwaysBounceVertical = NO;
         self.bounces = YES;
         self.showsHorizontalScrollIndicator = YES;
-        self.backgroundColor = [UIColor whiteColor];
         self.scrollEnabled = self.treeViewStyle == NodeTreeViewStyleExpansion;
         [self addSubview:self.tableview];
         
@@ -172,7 +181,7 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         if (delegate && [delegate respondsToSelector:@selector(nodeTreeView:indentAtNodeLevel:)]) {
             CGFloat indentationWidth = [delegate nodeTreeView:self indentAtNodeLevel:node.nodeLevel];
             [cell.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                obj.frame =  CGRectMake(indentationWidth, 0, cell.contentView.frame.size.width-indentationWidth, obj.frame.size.height);
+                obj.frame =  CGRectMake(indentationWidth, 0,tableView.frame.size.width-indentationWidth, obj.frame.size.height);
             }];
         }
     }
@@ -210,10 +219,6 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         }
     }    
 }
-
-#pragma mark ======== Custom Delegate ========
-
-#pragma mark ======== Event Response ========
 
 #pragma mark ======== Private Methods ========
 

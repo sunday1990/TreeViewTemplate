@@ -27,16 +27,12 @@
 */
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor orangeColor];
         [self setupSubviews];
     }
     return self;
 }
 
-- (void)setupSubviews{
-    [self addSubview:self.titleLabel];
-    [self addSubview:self.rightImgView];
-}
+#pragma mark ======== Custom Delegate ========
 
 - (void)updateNodeViewWithNodeModel:(id<NodeModelProtocol>)node{
     //将node转为该view对应的指定node，然后执行操作
@@ -50,6 +46,14 @@
     self.rightImgView.frame = CGRectMake(self.frame.size.width - 12 -12, self.frame.size.height/2-6, 12, 12);
 }
 
+#pragma mark ======== Private Methods ========
+
+- (void)setupSubviews{
+    [self addSubview:self.titleLabel];
+    [self addSubview:self.rightImgView];
+}
+
+#pragma mark ======== Setters && Getters ========
 - (UILabel *)titleLabel{
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc]init];

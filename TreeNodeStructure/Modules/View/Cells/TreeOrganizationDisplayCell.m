@@ -9,9 +9,13 @@
 #import "TreeOrganizationDisplayCell.h"
 #import "SinglePersonNodeView.h"
 #import "OrganizationNodeView.h"
+#import "AssistMicros.h"
 
 @interface TreeOrganizationDisplayCell ()<NodeTreeViewDelegate>
+
 @property (nonatomic, strong) NodeTreeView *treeView;
+
+@property (nonatomic, assign) NodeTreeViewStyle treeStyle;
 
 @end
 
@@ -28,9 +32,9 @@
     // Configure the view for the selected state
 }
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.backgroundColor = [UIColor greenColor];
+        self.treeStyle = treeStyle;
         [self setupSubviews];
     }
     return self;
@@ -42,18 +46,24 @@
 - (id<NodeViewProtocol>_Nonnull)nodeTreeView:(NodeTreeView *)treeView viewForNode:(id<NodeModelProtocol>)node{
     id _node = node;
     if ([_node isMemberOfClass:[SinglePersonNode class]]) {
-        return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
+        return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,WIDTH, node.nodeHeight)];
     }else if([_node isMemberOfClass:[OrganizationNode class]]){
-        return [[OrganizationNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
+        return [[OrganizationNodeView alloc]initWithFrame:CGRectMake(0, 0,WIDTH, node.nodeHeight)];
     }
     return [[SinglePersonNodeView alloc]initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, node.nodeHeight)];
 }
 
 - (CGFloat)nodeTreeView:(NodeTreeView *_Nonnull)treeView indentAtNodeLevel:(NSInteger)nodeLevel{
-    if (nodeLevel == 1) {
+    if (NodeTreeViewStyleBreadcrumbs == self.treeStyle) {
         return 0;
+    }else if (NodeTreeViewStyleExpansion == self.treeStyle){
+        if (nodeLevel == 1) {
+            return 0;
+        }else{
+            return 30*nodeLevel;
+        }
     }else{
-        return 15*nodeLevel;
+        return 0;
     }
 }
 
@@ -64,17 +74,12 @@
         if (personNode.subNodes.count == 0) {
             personNode.selected = !personNode.selected;
         }
-    }else if ([selectNode isMemberOfClass:[OrganizationNode class]]){
-        OrganizationNode *simpleNode = (OrganizationNode *)node;
-        NSLog(@"选中了%@",simpleNode.title);        
     }
     //通过node来刷新headerView，通过对调传给外界
     if (self.selectNode) {
         self.selectNode((BaseTreeNode *)node);
     }
 }
-
-
 
 #pragma mark ======== Private Methods ========
 
@@ -98,13 +103,10 @@
 
 - (NodeTreeView *)treeView{
     if (!_treeView) {
-        _treeView = [[NodeTreeView alloc]initWithFrame:self.bounds treeViewStyle:NodeTreeViewStyleExpansion];
+        _treeView = [[NodeTreeView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, self.frame.size.height) treeViewStyle:self.treeStyle];
         _treeView.manualRefresh = YES;//手动刷新
-        _treeView.backgroundColor = [UIColor orangeColor];
-        _treeView.indepent = 15;
         _treeView.treeDelegate = self;
     }
     return _treeView;
 }
-
 @end

@@ -7,11 +7,6 @@
 //
 
 #import "SinglePersonNode.h"
-
 @implementation SinglePersonNode
-@synthesize
-inputItemtitle = _inputItemtitle,
-inputItemID = _inputItemID;
-
 @end
 

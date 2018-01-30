@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CustomSearchInputItemProtocol.h"
 #import "BaseTreeNode.h"
-@interface SinglePersonNode : BaseTreeNode<CustomSearchInputItemProtocol>
+@interface SinglePersonNode : BaseTreeNode
 /**
  姓名
  */

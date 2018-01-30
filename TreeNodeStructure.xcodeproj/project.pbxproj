@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16340A4220204B5F0026E47F /* BreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4120204B5F0026E47F /* BreadcrumbViewController.m */; };
+		16340A4520204B6A0026E47F /* ExpansionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4420204B6A0026E47F /* ExpansionViewController.m */; };
+		16340A5020205F3F0026E47F /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4F20205F3F0026E47F /* BaseViewController.m */; };
 		169F23FD2016CECE00793E22 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F23FC2016CECE00793E22 /* AppDelegate.m */; };
 		169F24002016CECE00793E22 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F23FF2016CECE00793E22 /* ViewController.m */; };
 		169F24032016CECE00793E22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 169F24012016CECE00793E22 /* Main.storyboard */; };
@@ -25,7 +28,6 @@
 		169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */; };
 		169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */; };
 		169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24602018862300793E22 /* SinglePersonDisplayCell.m */; };
-		169F24C22019B66F00793E22 /* CustomSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F24C12019B66F00793E22 /* CustomSearchBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16340A4020204B5F0026E47F /* BreadcrumbViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BreadcrumbViewController.h; sourceTree = "<group>"; };
+		16340A4120204B5F0026E47F /* BreadcrumbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BreadcrumbViewController.m; sourceTree = "<group>"; };
+		16340A4320204B6A0026E47F /* ExpansionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpansionViewController.h; sourceTree = "<group>"; };
+		16340A4420204B6A0026E47F /* ExpansionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpansionViewController.m; sourceTree = "<group>"; };
+		16340A4D20204DDA0026E47F /* AssistMicros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssistMicros.h; sourceTree = "<group>"; };
+		16340A4E20205F3F0026E47F /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		16340A4F20205F3F0026E47F /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		169F23F82016CECE00793E22 /* TreeNodeStructure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TreeNodeStructure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		169F23FB2016CECE00793E22 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		169F23FC2016CECE00793E22 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -84,9 +93,6 @@
 		169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchByOrganizationInfoCell.m; sourceTree = "<group>"; };
 		169F245F2018862300793E22 /* SinglePersonDisplayCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SinglePersonDisplayCell.h; sourceTree = "<group>"; };
 		169F24602018862300793E22 /* SinglePersonDisplayCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinglePersonDisplayCell.m; sourceTree = "<group>"; };
-		169F24BF2019B66F00793E22 /* CustomSearchInputItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSearchInputItemProtocol.h; sourceTree = "<group>"; };
-		169F24C02019B66F00793E22 /* CustomSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSearchBar.h; sourceTree = "<group>"; };
-		169F24C12019B66F00793E22 /* CustomSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSearchBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16340A4620204B810026E47F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				16340A4B20204BDE0026E47F /* Others */,
+				16340A4A20204BC10026E47F /* Cells */,
+				16340A4920204BB60026E47F /* NodeViews */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		16340A4720204B8C0026E47F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				169F24382016E72000793E22 /* SinglePersonNode.h */,
+				169F24392016E72000793E22 /* SinglePersonNode.m */,
+				169F24362016E6CE00793E22 /* OrganizationNode.h */,
+				169F24352016E6CE00793E22 /* OrganizationNode.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		16340A4820204B910026E47F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				16340A4020204B5F0026E47F /* BreadcrumbViewController.h */,
+				16340A4120204B5F0026E47F /* BreadcrumbViewController.m */,
+				16340A4320204B6A0026E47F /* ExpansionViewController.h */,
+				16340A4420204B6A0026E47F /* ExpansionViewController.m */,
+				16340A4E20205F3F0026E47F /* BaseViewController.h */,
+				16340A4F20205F3F0026E47F /* BaseViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		16340A4920204BB60026E47F /* NodeViews */ = {
+			isa = PBXGroup;
+			children = (
+				169F24462017064900793E22 /* SinglePersonNodeView.h */,
+				169F24472017064900793E22 /* SinglePersonNodeView.m */,
+				169F244C2017106D00793E22 /* OrganizationNodeView.h */,
+				169F244D2017106D00793E22 /* OrganizationNodeView.m */,
+			);
+			path = NodeViews;
+			sourceTree = "<group>";
+		};
+		16340A4A20204BC10026E47F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				169F245220173F5500793E22 /* TreeOrganizationDisplayCell.h */,
+				169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */,
+				169F245F2018862300793E22 /* SinglePersonDisplayCell.h */,
+				169F24602018862300793E22 /* SinglePersonDisplayCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		16340A4B20204BDE0026E47F /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				169F245C20187C2500793E22 /* SearchByOrganizationInfoCell.h */,
+				169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */,
+				169F244F201736F500793E22 /* BreadcrumbHeaderView.h */,
+				169F2450201736F500793E22 /* BreadcrumbHeaderView.m */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		169F23EF2016CECE00793E22 = {
 			isa = PBXGroup;
 			children = (
@@ -138,12 +211,12 @@
 			isa = PBXGroup;
 			children = (
 				169F24432016FD8900793E22 /* Modules */,
-				169F24BE2019B2EA00793E22 /* CustomSearchBar */,
 				169F242D2016CF5500793E22 /* TreeNode */,
 				169F23FB2016CECE00793E22 /* AppDelegate.h */,
 				169F23FC2016CECE00793E22 /* AppDelegate.m */,
 				169F23FE2016CECE00793E22 /* ViewController.h */,
 				169F23FF2016CECE00793E22 /* ViewController.m */,
+				16340A4D20204DDA0026E47F /* AssistMicros.h */,
 				169F24012016CECE00793E22 /* Main.storyboard */,
 				169F24042016CECE00793E22 /* Assets.xcassets */,
 				169F24062016CECE00793E22 /* LaunchScreen.storyboard */,
@@ -202,22 +275,9 @@
 		169F24432016FD8900793E22 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				169F24382016E72000793E22 /* SinglePersonNode.h */,
-				169F24392016E72000793E22 /* SinglePersonNode.m */,
-				169F24462017064900793E22 /* SinglePersonNodeView.h */,
-				169F24472017064900793E22 /* SinglePersonNodeView.m */,
-				169F24362016E6CE00793E22 /* OrganizationNode.h */,
-				169F24352016E6CE00793E22 /* OrganizationNode.m */,
-				169F244C2017106D00793E22 /* OrganizationNodeView.h */,
-				169F244D2017106D00793E22 /* OrganizationNodeView.m */,
-				169F245220173F5500793E22 /* TreeOrganizationDisplayCell.h */,
-				169F245320173F5500793E22 /* TreeOrganizationDisplayCell.m */,
-				169F245F2018862300793E22 /* SinglePersonDisplayCell.h */,
-				169F24602018862300793E22 /* SinglePersonDisplayCell.m */,
-				169F245C20187C2500793E22 /* SearchByOrganizationInfoCell.h */,
-				169F245D20187C2500793E22 /* SearchByOrganizationInfoCell.m */,
-				169F244F201736F500793E22 /* BreadcrumbHeaderView.h */,
-				169F2450201736F500793E22 /* BreadcrumbHeaderView.m */,
+				16340A4820204B910026E47F /* Controller */,
+				16340A4720204B8C0026E47F /* Model */,
+				16340A4620204B810026E47F /* View */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -229,16 +289,6 @@
 				169F2444201704CF00793E22 /* NodeViewProtocol.h */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		169F24BE2019B2EA00793E22 /* CustomSearchBar */ = {
-			isa = PBXGroup;
-			children = (
-				169F24C02019B66F00793E22 /* CustomSearchBar.h */,
-				169F24C12019B66F00793E22 /* CustomSearchBar.m */,
-				169F24BF2019B66F00793E22 /* CustomSearchInputItemProtocol.h */,
-			);
-			path = CustomSearchBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,12 +426,14 @@
 			files = (
 				169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */,
 				169F245E20187C2500793E22 /* SearchByOrganizationInfoCell.m in Sources */,
-				169F24C22019B66F00793E22 /* CustomSearchBar.m in Sources */,
 				169F24002016CECE00793E22 /* ViewController.m in Sources */,
 				169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */,
 				169F240B2016CECE00793E22 /* main.m in Sources */,
 				169F24422016FC7000793E22 /* NodeTreeView.m in Sources */,
+				16340A5020205F3F0026E47F /* BaseViewController.m in Sources */,
 				169F24612018862300793E22 /* SinglePersonDisplayCell.m in Sources */,
+				16340A4520204B6A0026E47F /* ExpansionViewController.m in Sources */,
+				16340A4220204B5F0026E47F /* BreadcrumbViewController.m in Sources */,
 				169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */,
 				169F24302016CF6800793E22 /* BaseTreeNode.m in Sources */,
 				169F23FD2016CECE00793E22 /* AppDelegate.m in Sources */,
