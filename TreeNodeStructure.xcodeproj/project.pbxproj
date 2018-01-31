@@ -138,12 +138,9 @@
 		16340A4820204B910026E47F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				16340A4020204B5F0026E47F /* BreadcrumbViewController.h */,
-				16340A4120204B5F0026E47F /* BreadcrumbViewController.m */,
-				16340A4320204B6A0026E47F /* ExpansionViewController.h */,
-				16340A4420204B6A0026E47F /* ExpansionViewController.m */,
-				16340A4E20205F3F0026E47F /* BaseViewController.h */,
-				16340A4F20205F3F0026E47F /* BaseViewController.m */,
+				16340A5220216AD70026E47F /* Base */,
+				16340A5320216ADF0026E47F /* AutoRefresh */,
+				16340A5120216ABF0026E47F /* ManaulRefresh */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -175,6 +172,33 @@
 				169F2450201736F500793E22 /* BreadcrumbHeaderView.m */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		16340A5120216ABF0026E47F /* ManaulRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				16340A4020204B5F0026E47F /* BreadcrumbViewController.h */,
+				16340A4120204B5F0026E47F /* BreadcrumbViewController.m */,
+				16340A4320204B6A0026E47F /* ExpansionViewController.h */,
+				16340A4420204B6A0026E47F /* ExpansionViewController.m */,
+			);
+			path = ManaulRefresh;
+			sourceTree = "<group>";
+		};
+		16340A5220216AD70026E47F /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				16340A4E20205F3F0026E47F /* BaseViewController.h */,
+				16340A4F20205F3F0026E47F /* BaseViewController.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		16340A5320216ADF0026E47F /* AutoRefresh */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AutoRefresh;
 			sourceTree = "<group>";
 		};
 		169F23EF2016CECE00793E22 = {

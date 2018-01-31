@@ -17,6 +17,8 @@
 
 @property (nonatomic, assign) NodeTreeViewStyle treeStyle;
 
+@property (nonatomic, assign) NodeTreeRefreshPolicy treeRefreshPolicy;
+
 @end
 
 @implementation TreeOrganizationDisplayCell
@@ -30,6 +32,15 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle treeRefreshPolicy:(NodeTreeRefreshPolicy)policy{
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.treeStyle = treeStyle;
+        self.treeRefreshPolicy = policy;
+        [self setupSubviews];
+    }
+    return self;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle{
@@ -105,6 +116,7 @@
     if (!_treeView) {
         _treeView = [[NodeTreeView alloc]initWithFrame:CGRectMake(0, 0, WIDTH, self.frame.size.height) treeViewStyle:self.treeStyle];
         _treeView.treeDelegate = self;
+        _treeView.refreshPolicy = self.treeRefreshPolicy;
     }
     return _treeView;
 }

@@ -12,11 +12,16 @@
 
 typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
 {
-    NodeTreeViewStyleDefault,               //默认形式也就是展开形式
+    NodeTreeViewStyleDefault,               //默认形式也就是展开形式(暂未处理)
     NodeTreeViewStyleBreadcrumbs,          //面包屑形式
     NodeTreeViewStyleExpansion              //展开形式
 };
 
+typedef NS_ENUM(NSUInteger,NodeTreeRefreshPolicy)
+{
+    NodeTreeRefreshPolicyManaul = 1,       //手动形式，常用于网络数据源
+    NodeTreeRefreshPolicyAutomic           //自动刷新，常用于本地数据源
+};
 @class NodeTreeView;
 @protocol NodeTreeViewDelegate
 @required
@@ -51,19 +56,10 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
 
 @interface NodeTreeView : UIScrollView
 /**
- 开启手动刷新,默认是自动刷新
+树的刷新策略
+默认是手动刷新：NodeTreeRefreshPolicyManaul
  */
-@property (nonatomic, assign,getter=isManualRefresh) BOOL manualRefresh;
-
-/**
- 开启自动刷新，默认是手动刷新
- 
- 自动刷新多用于本地固定数据源
- 
- 手动刷新多用于数据源需要由网络请求得到的情景
- */
-@property (nonatomic, assign,getter=isAutoRefresh) BOOL autoRefresh;
-
+@property (nonatomic, assign) NodeTreeRefreshPolicy refreshPolicy;
 /**
  代理
  */
@@ -80,7 +76,6 @@ typedef NS_ENUM(NSUInteger,NodeTreeViewStyle)
  @return treeView实例
  */
 - (instancetype _Nullable )initWithFrame:(CGRect)frame treeViewStyle:(NodeTreeViewStyle)style;
-
 /**
  刷新node节点对应的树
  */

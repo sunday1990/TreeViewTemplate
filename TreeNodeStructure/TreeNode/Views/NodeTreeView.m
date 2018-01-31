@@ -93,6 +93,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 
 @property (nonatomic, assign) NodeTreeViewStyle treeViewStyle;
 
+@property (nonatomic, assign,getter=isAutoRefresh) BOOL autoRefresh;
+
 @end
 
 
@@ -112,7 +114,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         self.alwaysBounceVertical = NO;
         self.bounces = YES;
         self.showsHorizontalScrollIndicator = YES;
-        self.scrollEnabled = self.treeViewStyle == NodeTreeViewStyleExpansion;
+        self.scrollEnabled = self.treeViewStyle == NodeTreeViewStyleExpansion;        
+        self.refreshPolicy = NodeTreeRefreshPolicyManaul;
         [self addSubview:self.tableview];
         
     }
@@ -122,6 +125,7 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         self.treeViewStyle = NodeTreeViewStyleBreadcrumbs;//默认
+        self.refreshPolicy = NodeTreeRefreshPolicyManaul;
         [self addSubview:self.tableview];
     }
     return self;
@@ -309,6 +313,18 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 }
 
 #pragma mark ======== Setters && Getters ========
+- (void)setRefreshPolicy:(NodeTreeRefreshPolicy)refreshPolicy{
+    if (refreshPolicy != NodeTreeRefreshPolicyManaul && refreshPolicy != NodeTreeRefreshPolicyAutomic) {//避免外界赋值错误，如果错误会默认变为手动刷新
+        refreshPolicy = NodeTreeRefreshPolicyManaul;
+    }
+    _refreshPolicy = refreshPolicy;
+    if (NodeTreeRefreshPolicyManaul == _refreshPolicy) {//手动刷新
+        self.autoRefresh = NO;
+    }else{//自动刷新
+        self.autoRefresh = YES;
+    }
+}
+
 - (UITableView *)tableview{
     if (!_tableview) {
         _tableview = [[UITableView alloc]initWithFrame:self.bounds style:UITableViewStylePlain];
