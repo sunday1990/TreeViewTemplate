@@ -196,24 +196,34 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }else{
         node = self.allNodes[indexPath.row];
     }
+    //判断刷新方式
     if (self.autoRefresh) {
         if (node.subNodes.count>0) {
             //自动刷新，不需要立马改变node的展开状态，RowAnimation刷新动画是固定的
             [self reloadTreeViewWithNode:node];
         }
+        
     }else{
         if (node.subNodes.count>0) {
             //手动刷新，需要第一时间改变node的展开状态,由外界控制刷新时机和RowAnimation刷新动画
             node.expand = !node.expand;
         }
     }
+    
     //告知代理
     if (self.treeDelegate) {
         id treeDelegate = self.treeDelegate;
         if ([treeDelegate respondsToSelector:@selector(nodeTreeView:didSelectNode:)]) {
             [treeDelegate nodeTreeView:self didSelectNode:node];
         }
-    }    
+    }
+    //如果是自动刷新，则在代理方法执行完后会自动执行刷新方法
+    if (self.autoRefresh) {
+        id nodeView = [self nodeViewForNode:node];
+        if ([nodeView respondsToSelector:@selector(updateNodeViewWithNodeModel:)]) {
+            [nodeView updateNodeViewWithNodeModel:node];
+        }
+    }
 }
 
 #pragma mark ======== Private Methods ========
@@ -222,7 +232,7 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     if (NodeTreeViewStyleBreadcrumbs == self.treeViewStyle) {
         [self reloadTreeViewWithNode:node RowAnimation:UITableViewRowAnimationLeft];
     }else{
-        [self reloadTreeViewWithNode:node RowAnimation:UITableViewRowAnimationFade];
+        [self reloadTreeViewWithNode:node RowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -230,17 +240,14 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     if (NodeTreeViewStyleBreadcrumbs == self.treeViewStyle) {
         self.frame = CGRectMake(0, 0, self.frame.size.width, node.subTreeHeight);
         _tableview.frame = self.bounds;//self.bounds
-        //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
         self.currentNode = node;
-        //更改数据源
         [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
     }else{
         if (self.allNodes.count == 0) {
             //初始化数据源，递归的将所有需要展开的节点，加入数据源中
             RecursiveInitializeAllNodesWithRootNode(self.allNodes, node);
             self.frame = CGRectMake(0, 0, self.frame.size.width, node.currentTreeHeight);
-            _tableview.frame = self.bounds;//CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2)
-            //self.contentSize = CGSizeMake(0, node.subTreeHeight+12);
+            _tableview.frame = self.bounds;
             [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
         }else{
             if (node.subNodes.count == 0) {//没有子节点，不需要展开也不需要收起，刷新指定cell即可
@@ -288,10 +295,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
                     if (self.autoRefresh) {
                         node.expand = !node.expand;
                     }
-                    self.frame = CGRectMake(0, 0, self.frame.size.width,node.currentTreeHeight);//self.frame.size.height+node.subTreeHeight
-                    _tableview.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+2);//self.bounds
-
-                    //self.contentSize = CGSizeMake(0, self.frame.size.height+12);
+                    self.frame = CGRectMake(0, 0, self.frame.size.width,node.currentTreeHeight);
+                    _tableview.frame = self.bounds;
                     [self.allNodes insertObjects:node.subNodes atIndexes:set];
                     [_tableview insertRowsAtIndexPaths:indexPathes withRowAnimation:animation];
                 }
@@ -343,7 +348,6 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }
     return _allNodes;
 }
-
 @end
 
 

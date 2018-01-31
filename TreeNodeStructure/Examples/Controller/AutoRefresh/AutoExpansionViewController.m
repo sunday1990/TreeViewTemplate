@@ -28,6 +28,21 @@
 
 #pragma mark ======== System Delegate ========
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *CELL_ID = @"StructureTreeOrganizationDisplayCellID";
+    TreeOrganizationDisplayCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
+    if (cell == nil) {
+        cell = [[TreeOrganizationDisplayCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_ID treeStyle:NodeTreeViewStyleExpansion treeRefreshPolicy:NodeTreeRefreshPolicyAutomic];
+        __weak typeof(self)weakSelf = self;
+        cell.selectNode = ^(BaseTreeNode *node) {
+            [weakSelf.tableview reloadData];
+        };
+    }
+    [cell reloadTreeViewWithNode:self.currentNode RowAnimation:UITableViewRowAnimationFade];
+    
+    return cell;
+}
+
 #pragma mark ======== Custom Delegate ========
 
 #pragma mark ======== Notifications && Observers ========

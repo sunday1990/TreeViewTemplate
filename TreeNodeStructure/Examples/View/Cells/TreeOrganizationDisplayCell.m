@@ -86,7 +86,7 @@
             personNode.selected = !personNode.selected;
         }
     }
-    //通过node来刷新headerView，通过对调传给外界
+    //通过node来刷新headerView，通过回调传给外界
     if (self.selectNode) {
         self.selectNode((BaseTreeNode *)node);
     }
