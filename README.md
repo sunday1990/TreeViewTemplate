@@ -142,91 +142,104 @@ RowAnimation:(UITableViewRowAnimation)animation;
 1、#pragma mark NodeTreeViewStyleExpansion模式下，初始化数据源，递归的将所有需要展开的节点，加入到初始数据源中
 
 static inline void RecursiveInitializeAllNodesWithRootNode(NSMutableArray *allNodes,id<NodeModelProtocol>rootNode){
-if (rootNode.expand == NO || rootNode.subNodes.count == 0) {
-return;
-}else{
-if (allNodes.count == 0) {
-[allNodes addObjectsFromArray:rootNode.subNodes];
-}else{
-NSUInteger beginPosition = [allNodes indexOfObject:rootNode] + 1;
-NSUInteger endPosition = beginPosition + rootNode.subNodes.count - 1;
-NSRange range = NSMakeRange(beginPosition, endPosition-beginPosition+1);
-NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
-[allNodes insertObjects:rootNode.subNodes atIndexes:set];
-}
-for (id<NodeModelProtocol>subNode in rootNode.subNodes) {
-rootNode = subNode;
-RecursiveInitializeAllNodesWithRootNode(allNodes, rootNode);
-}
-}
+    if (rootNode.expand == NO || rootNode.subNodes.count == 0) {
+        return;
+    }else{
+        if (allNodes.count == 0) {
+            [allNodes addObjectsFromArray:rootNode.subNodes];
+        }else{
+            NSUInteger beginPosition = [allNodes indexOfObject:rootNode] + 1;
+            NSUInteger endPosition = beginPosition + rootNode.subNodes.count - 1;
+            NSRange range = NSMakeRange(beginPosition, endPosition-beginPosition+1);
+            NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
+            [allNodes insertObjects:rootNode.subNodes atIndexes:set];
+        }
+        for (id<NodeModelProtocol>subNode in rootNode.subNodes) {
+            rootNode = subNode;
+            RecursiveInitializeAllNodesWithRootNode(allNodes, rootNode);
+        }
+    }
 }
 
 2、#pragma mark 递归的将某节点下所有子节点的展开状态置为NO
+
 static inline void RecursiveFoldAllSubnodesAtNode(id<NodeModelProtocol>node){
-if (node.subNodes.count>0) {
-[node.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-if (obj.isExpand) {
-obj.expand = NO;
-RecursiveFoldAllSubnodesAtNode(node);
-}
-}];
-}else{
-return;
-}
+
+    if (node.subNodes.count>0) {
+        [node.subNodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.isExpand) {
+            obj.expand = NO;
+            RecursiveFoldAllSubnodesAtNode(node);
+        }}];
+    }else{
+        return;
+    }
 }
 
 3、#pragma mark 递归的向view的所有子view发送setNeedsLayout消息，进行重新布局
+
 static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
-if (view.subviews.count == 0) {
-return;
-}else{
-[view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subView, NSUInteger idx, BOOL * _Nonnull stop) {
-[subView setNeedsLayout];
-RecursiveLayoutSubviews(subView);
-}];
+    if (view.subviews.count == 0) {
+        return;
+    }else{
+        [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subView, NSUInteger idx, BOOL * _Nonnull stop) {
+            [subView setNeedsLayout];
+            RecursiveLayoutSubviews(subView);
+    }];
 }
 }
 
 ====================  BaseTreeNode.m中对递归的使用   ====================
 CGFloat treeHeight;
+
 CGFloat tempNodeLevel;
 
 4、#pragma mark 获取根节点
+
 static inline id<NodeModelProtocol>RecursiveGetRootNodeWithNode(id<NodeModelProtocol> node){
-if (node.fatherNode == node) {
-node.expand = YES;
-return node;
-}else{
-node = node.fatherNode;
-tempNodeLevel = tempNodeLevel+1;
-return  RecursiveGetRootNodeWithNode(node);
-}
+    if (node.fatherNode == node) {
+        node.expand = YES;
+        return node;
+    }else{
+        node = node.fatherNode;
+        tempNodeLevel = tempNodeLevel+1;
+        return  RecursiveGetRootNodeWithNode(node);
+    }
 }
 
 5、#pragma mark 根据根节点获取树的高度
+
 static inline void RecursiveCalculateTreeHeightWithRootNode(id<NodeModelProtocol> rootNode){
-if (rootNode.subNodes.count == 0||!rootNode.isExpand) {
-return ;
-}
-if (!isnan(rootNode.subTreeHeight)) {
-treeHeight += rootNode.subTreeHeight;
-}
-for (id<NodeModelProtocol>obj in rootNode.subNodes) {
-RecursiveCalculateTreeHeightWithRootNode(obj);
-}
+    if (rootNode.subNodes.count == 0||!rootNode.isExpand) {
+        return ;
+    }
+    if (!isnan(rootNode.subTreeHeight)) {
+        treeHeight += rootNode.subTreeHeight;
+    }
+    for (id<NodeModelProtocol>obj in rootNode.subNodes) {
+        RecursiveCalculateTreeHeightWithRootNode(obj);
+    }
 }
 
 ```
 ## 四、效果展示
 
 1、面包屑模式-自动
+
 ![面包屑模式-自动](https://user-gold-cdn.xitu.io/2018/1/31/1614ba34ac5701fc?w=285&h=428&f=gif&s=493107)
+
 2、面包屑模式-手动
+
 ![面包屑模式-手动](https://user-gold-cdn.xitu.io/2018/1/31/1614ba3e54dd43d0?w=299&h=449&f=gif&s=468026)
+
 3、Expansion模式-自动
+
 ![Expansion模式-自动](https://user-gold-cdn.xitu.io/2018/1/31/1614ba44592cab16?w=241&h=362&f=gif&s=515876)
+
 4、Expansion模式-手动
+
 ![Expansion模式-手动](https://user-gold-cdn.xitu.io/2018/1/31/1614ba4a344fce1c?w=214&h=321&f=gif&s=522766)
+
 
 GitHub下载地址：[TreeViewTemplate](https://github.com/sunday1990/TreeViewTemplate)
 
