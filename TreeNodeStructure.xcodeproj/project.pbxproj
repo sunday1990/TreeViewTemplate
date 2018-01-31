@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		16340A4220204B5F0026E47F /* BreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4120204B5F0026E47F /* BreadcrumbViewController.m */; };
 		16340A4520204B6A0026E47F /* ExpansionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4420204B6A0026E47F /* ExpansionViewController.m */; };
-		16340A5020205F3F0026E47F /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A4F20205F3F0026E47F /* BaseViewController.m */; };
+		16340A5920216BFE0026E47F /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A5820216BFE0026E47F /* BaseViewController.m */; };
+		16340A5C20216C5C0026E47F /* AutoBreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A5B20216C5C0026E47F /* AutoBreadcrumbViewController.m */; };
+		16340A5F20216C7D0026E47F /* AutoExpansionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16340A5E20216C7D0026E47F /* AutoExpansionViewController.m */; };
 		169F23FD2016CECE00793E22 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F23FC2016CECE00793E22 /* AppDelegate.m */; };
 		169F24002016CECE00793E22 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F23FF2016CECE00793E22 /* ViewController.m */; };
 		169F24032016CECE00793E22 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 169F24012016CECE00793E22 /* Main.storyboard */; };
@@ -51,8 +53,14 @@
 		16340A4320204B6A0026E47F /* ExpansionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExpansionViewController.h; sourceTree = "<group>"; };
 		16340A4420204B6A0026E47F /* ExpansionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExpansionViewController.m; sourceTree = "<group>"; };
 		16340A4D20204DDA0026E47F /* AssistMicros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssistMicros.h; sourceTree = "<group>"; };
-		16340A4E20205F3F0026E47F /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
-		16340A4F20205F3F0026E47F /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		16340A5720216BFE0026E47F /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		16340A5820216BFE0026E47F /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		16340A5A20216C5C0026E47F /* AutoBreadcrumbViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoBreadcrumbViewController.h; sourceTree = "<group>"; };
+		16340A5B20216C5C0026E47F /* AutoBreadcrumbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoBreadcrumbViewController.m; sourceTree = "<group>"; };
+		16340A5D20216C7D0026E47F /* AutoExpansionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoExpansionViewController.h; sourceTree = "<group>"; };
+		16340A5E20216C7D0026E47F /* AutoExpansionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoExpansionViewController.m; sourceTree = "<group>"; };
+		16340A61202189930026E47F /* CustomNodeModelProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomNodeModelProtocol.h; sourceTree = "<group>"; };
+		16340A6220218AD50026E47F /* CustomNodeViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomNodeViewProtocol.h; sourceTree = "<group>"; };
 		169F23F82016CECE00793E22 /* TreeNodeStructure.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TreeNodeStructure.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		169F23FB2016CECE00793E22 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		169F23FC2016CECE00793E22 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -188,8 +196,8 @@
 		16340A5220216AD70026E47F /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				16340A4E20205F3F0026E47F /* BaseViewController.h */,
-				16340A4F20205F3F0026E47F /* BaseViewController.m */,
+				16340A5720216BFE0026E47F /* BaseViewController.h */,
+				16340A5820216BFE0026E47F /* BaseViewController.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -197,8 +205,21 @@
 		16340A5320216ADF0026E47F /* AutoRefresh */ = {
 			isa = PBXGroup;
 			children = (
+				16340A5A20216C5C0026E47F /* AutoBreadcrumbViewController.h */,
+				16340A5B20216C5C0026E47F /* AutoBreadcrumbViewController.m */,
+				16340A5D20216C7D0026E47F /* AutoExpansionViewController.h */,
+				16340A5E20216C7D0026E47F /* AutoExpansionViewController.m */,
 			);
 			path = AutoRefresh;
+			sourceTree = "<group>";
+		};
+		16340A602021896F0026E47F /* CustomProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				16340A61202189930026E47F /* CustomNodeModelProtocol.h */,
+				16340A6220218AD50026E47F /* CustomNodeViewProtocol.h */,
+			);
+			path = CustomProtocols;
 			sourceTree = "<group>";
 		};
 		169F23EF2016CECE00793E22 = {
@@ -289,6 +310,7 @@
 		169F24432016FD8900793E22 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				16340A602021896F0026E47F /* CustomProtocols */,
 				16340A4820204B910026E47F /* Controller */,
 				16340A4720204B8C0026E47F /* Model */,
 				16340A4620204B810026E47F /* View */,
@@ -439,11 +461,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				169F244E2017106D00793E22 /* OrganizationNodeView.m in Sources */,
+				16340A5C20216C5C0026E47F /* AutoBreadcrumbViewController.m in Sources */,
 				169F24002016CECE00793E22 /* ViewController.m in Sources */,
 				169F245420173F5500793E22 /* TreeOrganizationDisplayCell.m in Sources */,
 				169F240B2016CECE00793E22 /* main.m in Sources */,
+				16340A5F20216C7D0026E47F /* AutoExpansionViewController.m in Sources */,
 				169F24422016FC7000793E22 /* NodeTreeView.m in Sources */,
-				16340A5020205F3F0026E47F /* BaseViewController.m in Sources */,
+				16340A5920216BFE0026E47F /* BaseViewController.m in Sources */,
 				16340A4520204B6A0026E47F /* ExpansionViewController.m in Sources */,
 				16340A4220204B5F0026E47F /* BreadcrumbViewController.m in Sources */,
 				169F2451201736F500793E22 /* BreadcrumbHeaderView.m in Sources */,

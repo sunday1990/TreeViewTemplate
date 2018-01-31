@@ -1,22 +1,23 @@
 //
-//  BreadcrumbViewController.m
+//  AutoBreadcrumbViewController.m
 //  TreeNodeStructure
 //
-//  Created by ccSunday on 2018/1/30.
+//  Created by ccSunday on 2018/1/31.
 //  Copyright © 2018年 ccSunday. All rights reserved.
 //
 
-#import "BreadcrumbViewController.h"
+#import "AutoBreadcrumbViewController.h"
 #import "BreadcrumbHeaderView.h"
 
-@interface BreadcrumbViewController ()
+@interface AutoBreadcrumbViewController ()
 /**
  面包屑
  */
 @property (nonatomic, strong) BreadcrumbHeaderView *breadcrumbView;
+
 @end
 
-@implementation BreadcrumbViewController
+@implementation AutoBreadcrumbViewController
 #pragma mark ======== Life Cycle ========
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,12 +51,13 @@
     static NSString *CELL_ID = @"StructureTreeOrganizationDisplayCellID";
     TreeOrganizationDisplayCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
     if (cell == nil) {
-        cell = [[TreeOrganizationDisplayCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_ID treeStyle:NodeTreeViewStyleBreadcrumbs];
-        //cell事件的block回调
+        cell = [[TreeOrganizationDisplayCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELL_ID treeStyle:NodeTreeViewStyleBreadcrumbs treeRefreshPolicy:NodeTreeRefreshPolicyAutomic];
+        //cell事件的block回调,只负责将所选择的点传递出来，更新headerview，不需要手动刷新
         __weak typeof(self)weakSelf = self;
         cell.selectNode = ^(BaseTreeNode *node) {
-            #warning 此处可以模拟网络获取节点进行展示
-            [weakSelf selectNode:node nodeTreeAnimation:UITableViewRowAnimationFade];
+            if (node.subNodes.count > 0) {
+                [weakSelf selectNode:node nodeTreeAnimation:weakSelf.rowAnimation];
+            }
         };
     }
     [cell reloadTreeViewWithNode:self.currentNode RowAnimation:self.rowAnimation];
@@ -71,23 +73,19 @@
 #pragma mark ======== Notifications && Observers ========
 
 #pragma mark ======== Method Overrides ========
-
 - (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation{
-    self.rowAnimation = rowAnimation;
     //更新header
     if (node.subNodes.count>0) {
-        self.currentNode = node;
         if ([node isMemberOfClass:[SinglePersonNode class]]) {
-            SinglePersonNode *cusNode = (SinglePersonNode *)node;
-            [self.breadcrumbView addSelectedNode:node withTitle:cusNode.name];
+            SinglePersonNode *personNode = (SinglePersonNode *)node;
+            [self.breadcrumbView addSelectedNode:personNode withTitle:personNode.name];
         }else if ([node isMemberOfClass:[OrganizationNode  class]]){
-            OrganizationNode *simpleNode = (OrganizationNode *)node;
-            [self.breadcrumbView addSelectedNode:simpleNode withTitle:simpleNode.title];
+            OrganizationNode *orgNode = (OrganizationNode *)node;
+            [self.breadcrumbView addSelectedNode:orgNode withTitle:orgNode.title];
         }else{
             [self.breadcrumbView addSelectedNode:node withTitle:@"xxx公司"];
         }
     }
-    [self.tableview reloadData];
 }
 
 #pragma mark ======== Event Response ========
@@ -108,13 +106,15 @@
             if (node.subNodes.count == 0) {
                 NSLog(@"do nothing");
             }else{
-                [weakSelf selectNode:node nodeTreeAnimation:nodeTreeAnimation];
+                weakSelf.currentNode = node;
+                weakSelf.rowAnimation = UITableViewRowAnimationRight;
+                [weakSelf selectNode:node nodeTreeAnimation:weakSelf.rowAnimation];
+                [weakSelf.tableview reloadData];
             }
         };
     }
     return _breadcrumbView;
 }
-
 /*
  #pragma mark - Navigation
  

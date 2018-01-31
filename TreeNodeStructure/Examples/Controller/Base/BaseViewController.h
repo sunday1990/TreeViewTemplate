@@ -26,7 +26,12 @@
  当前展示的node
  */
 @property (nonatomic, strong) BaseTreeNode *currentNode;
+/**
+ tableview展开方式
+ */
+@property (nonatomic, assign) UITableViewRowAnimation rowAnimation;
 
 - (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation;
 
 @end
+

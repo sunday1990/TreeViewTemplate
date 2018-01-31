@@ -8,9 +8,6 @@
 //
 
 #import "ViewController.h"
-
-#import "ExpansionViewController.h"
-#import "BreadcrumbViewController.h"
 #import "AssistMicros.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -25,14 +22,7 @@
 {
     NSArray *titleArray;
 }
-- (void)btnClick{
-//    ExpansionViewController *expVC = [[ExpansionViewController alloc]init];
-//    [self presentViewController:expVC animated:YES completion:nil];
-    
-    
-    BreadcrumbViewController *breadcrumbVC = [[BreadcrumbViewController alloc]init];
-    [self presentViewController:breadcrumbVC animated:YES completion:nil];
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -43,7 +33,7 @@
                     },
                    @{
                        @"title":@"面包屑style-自动刷新",
-                       @"class":@"BreadcrumbViewController"
+                       @"class":@"AutoBreadcrumbViewController"
                     },
                    @{
                        @"title":@"ExpansionStyle-手动刷新",
@@ -51,7 +41,7 @@
                     },
                    @{
                        @"title":@"ExpansionStyle-自动刷新",
-                       @"class":@"ExpansionViewController"
+                       @"class":@"AutoExpansionViewController"
                     }
                    ];
     [self.view addSubview:self.tableview];

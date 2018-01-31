@@ -7,8 +7,10 @@
 //
 
 #import "BaseTreeNode.h"
+
 CGFloat treeHeight;
 CGFloat tempNodeLevel;
+
 #pragma mark 获取根节点
 static inline id<NodeModelProtocol>RecursiveGetRootNodeWithNode(id<NodeModelProtocol> node){
     if (node.fatherNode == node) {
@@ -92,7 +94,6 @@ nodeLevel = _nodeLevel;
     return _nodeLevel;
 }
 
-#pragma mark 根据父节点获取该父节点树的高度，先序遍历树
 - (void)getTreeHeightAtFatherNode:(id<NodeModelProtocol>)fatherNode{
     if (fatherNode.subNodes.count == 0||!fatherNode.isExpand) {//叶子节点
         return ;
@@ -109,22 +110,14 @@ nodeLevel = _nodeLevel;
     node.fatherNode = self;
     [self.subNodes addObject:node];
 }
-/**
- 从node数组中添加节点
- 
- @param nodes nodes数组
- */
+
 - (void)addSubNodesFromArray:(NSArray<id<NodeModelProtocol>> *)nodes{
     [nodes enumerateObjectsUsingBlock:^(id<NodeModelProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.fatherNode = self;
     }];
     [self.subNodes addObjectsFromArray:nodes];
 }
-/**
- 删除节点
- 
- @param node node节点
- */
+
 - (void)deleteSubNode:(id<NodeModelProtocol>)node{
     [self.subNodes removeObject:node];
 }

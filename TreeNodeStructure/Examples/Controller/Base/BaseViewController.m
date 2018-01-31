@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.rowAnimation = UITableViewRowAnimationNone;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableview];
     [self.view addSubview:self.dismissBtn];

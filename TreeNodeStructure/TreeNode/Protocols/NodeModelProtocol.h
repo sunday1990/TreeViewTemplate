@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol NodeModelProtocol
+@required
 /**
  该节点元素自身的高度
  */
@@ -32,12 +33,6 @@
  @param node node节点
  */
 - (void)deleteSubNode:(id<NodeModelProtocol>)node;
-
-@optional
-/**
- ID标记
- */
-@property (nonatomic, copy) NSString *nodeID;
 /**
  父节点
  */
@@ -46,6 +41,12 @@
  该节点相对于根节点处于第几级
  */
 @property (nonatomic, assign) NSInteger nodeLevel;
+
+@optional
+/**
+ ID标记
+ */
+@property (nonatomic, copy) NSString *nodeID;
 /**
 该节点展开后的所有儿子节点的高度之和
  */
