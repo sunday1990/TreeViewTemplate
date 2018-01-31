@@ -72,7 +72,7 @@
 
 #pragma mark ======== Method Overrides ========
 
-- (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation{
+- (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation{    
     self.rowAnimation = rowAnimation;
     //更新header
     if (node.subNodes.count>0) {

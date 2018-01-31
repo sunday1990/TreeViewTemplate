@@ -246,7 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				169F24432016FD8900793E22 /* Examples */,
-				169F242D2016CF5500793E22 /* TreeNode */,
+				169F242D2016CF5500793E22 /* TreeViewTemplate */,
 				169F23FB2016CECE00793E22 /* AppDelegate.h */,
 				169F23FC2016CECE00793E22 /* AppDelegate.m */,
 				169F23FE2016CECE00793E22 /* ViewController.h */,
@@ -279,14 +279,14 @@
 			path = TreeNodeStructureUITests;
 			sourceTree = "<group>";
 		};
-		169F242D2016CF5500793E22 /* TreeNode */ = {
+		169F242D2016CF5500793E22 /* TreeViewTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				169F2445201704D400793E22 /* Protocols */,
 				169F243C2016FB2600793E22 /* Views */,
 				169F243B2016FB1700793E22 /* Nodes */,
 			);
-			path = TreeNode;
+			path = TreeViewTemplate;
 			sourceTree = "<group>";
 		};
 		169F243B2016FB1700793E22 /* Nodes */ = {

@@ -19,7 +19,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle;
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier treeStyle:(NodeTreeViewStyle)treeStyle treeRefreshPolicy:(NodeTreeRefreshPolicy)policy;
-
 /**
  刷新node节点对应的树
  */

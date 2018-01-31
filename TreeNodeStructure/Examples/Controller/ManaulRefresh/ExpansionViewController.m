@@ -33,17 +33,17 @@
 #pragma mark ======== NetWork ========
 
 #pragma mark ======== System Delegate ========
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+//}
 #pragma mark ======== Custom Delegate ========
 
 #pragma mark ======== Notifications && Observers ========
 
 #pragma mark ======== Method Overrides ========
-- (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation{
-    [super selectNode:node nodeTreeAnimation:rowAnimation];
-}
+//- (void)selectNode:(BaseTreeNode *)node nodeTreeAnimation:(UITableViewRowAnimation)rowAnimation{
+//    [super selectNode:node nodeTreeAnimation:rowAnimation];
+//}
 
 #pragma mark ======== Event Response ========
 

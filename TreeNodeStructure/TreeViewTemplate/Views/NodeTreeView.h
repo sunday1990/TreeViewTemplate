@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger,NodeTreeRefreshPolicy)
     NodeTreeRefreshPolicyAutomic           //自动刷新，常用于本地数据源
 };
 @class NodeTreeView;
+
 @protocol NodeTreeViewDelegate
 @required
 /**
@@ -78,7 +79,7 @@ typedef NS_ENUM(NSUInteger,NodeTreeRefreshPolicy)
 /**
  刷新node节点对应的树
  */
-- (void)reloadTreeViewWithNode:(id<NodeModelProtocol>_Nonnull)node;;
+- (void)reloadTreeViewWithNode:(id<NodeModelProtocol>_Nonnull)node;
 /**
  刷新node节点对应的树，可以指定动画展开的方式
 

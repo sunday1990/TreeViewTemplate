@@ -18,7 +18,7 @@
  */
 @property (nonatomic, assign) CGFloat nodeHeight;
 /**
- 该节点元素对应的所有子节点
+ 该节点元素对应的所有子节点,添加子节点的时候，不要直接向数组中添加，而应该通过addNode的方式，这样会自动设置父节点
  */
 @property (nonatomic, strong) NSMutableArray<id<NodeModelProtocol>> *subNodes;
 /**
@@ -34,7 +34,7 @@
  */
 - (void)deleteSubNode:(id<NodeModelProtocol>)node;
 /**
- 父节点
+ 父节点，注意根节点的父节点需要手动设置为自身
  */
 @property (nonatomic, weak) id<NodeModelProtocol> fatherNode;
 /**

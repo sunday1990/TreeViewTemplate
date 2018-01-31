@@ -28,19 +28,19 @@
     // Do any additional setup after loading the view, typically from a nib.
     titleArray = @[
                    @{
-                        @"title":@"面包屑style-手动刷新",
+                        @"title":@"BreadcrumbStyle-Manaul",
                         @"class":@"BreadcrumbViewController"
                     },
                    @{
-                       @"title":@"面包屑style-自动刷新",
+                       @"title":@"BreadcrumbStyle-automic",
                        @"class":@"AutoBreadcrumbViewController"
                     },
                    @{
-                       @"title":@"ExpansionStyle-手动刷新",
+                       @"title":@"ExpansionStyle-Manaul",
                        @"class":@"ExpansionViewController"
                     },
                    @{
-                       @"title":@"ExpansionStyle-自动刷新",
+                       @"title":@"ExpansionStyle-automic",
                        @"class":@"AutoExpansionViewController"
                     }
                    ];
@@ -92,7 +92,6 @@
         _tableview.dataSource = self;
         _tableview.rowHeight = 44;
         _tableview.tableFooterView = [[UIView alloc]init];
-//        _tableview.backgroundColor = [UIColor grayColor];
     }
     return _tableview;
 }
