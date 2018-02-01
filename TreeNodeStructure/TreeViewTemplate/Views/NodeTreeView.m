@@ -7,7 +7,6 @@
 //
 
 #import "NodeTreeView.h"
-#import "AssistMicros.h"
 
 #pragma mark 判断树在某一节点是否应该收起
 static inline bool TreeShouldFoldAtNode(BOOL autoRefresh, id<NodeModelProtocol> node){
