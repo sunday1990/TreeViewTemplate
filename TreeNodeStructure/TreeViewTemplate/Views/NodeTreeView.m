@@ -83,7 +83,14 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 
 #pragma mark NodeTreeView
 @interface NodeTreeView ()<UITableViewDelegate,UITableViewDataSource>
-
+{
+    struct {
+        unsigned int indentAtNodelevel:1;
+        unsigned int didSelectNode:1;
+        unsigned int viewForNode:1;
+    }_treeViewDelegateFalg;
+    
+}
 @property (nonatomic, strong) UITableView *tableview;
 
 @property (nonatomic, strong) NSMutableArray <id<NodeModelProtocol>>*allNodes;
@@ -162,7 +169,12 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     static NSString *CELLID = @"";
     NodeTreeViewCell *cell = [[NodeTreeViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CELLID];
     if (delegate) {
-        [cell setNodeView:[self.treeDelegate nodeTreeView:self viewForNode:node]];
+        if (_treeViewDelegateFalg.viewForNode) {
+            [cell setNodeView:[self.treeDelegate nodeTreeView:self viewForNode:node]];
+        }else{
+            NSString *error = [NSString stringWithFormat:@"NodeTreeView:%@ failed to obtain a nodeView from its delegate",self];
+            NSAssert(_treeViewDelegateFalg.viewForNode, error);
+        }
     }
     //刷新nodeView
     [cell.nodeView updateNodeViewWithNodeModel:node];
@@ -172,7 +184,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
             obj.frame =  CGRectMake(node.nodeLevel * self.indepent, 0, cell.contentView.frame.size.width - node.nodeLevel * self.indepent, obj.frame.size.height);
         }];
     }else{
-        if (delegate && [delegate respondsToSelector:@selector(nodeTreeView:indentAtNodeLevel:)]) {
+        
+        if (_treeViewDelegateFalg.indentAtNodelevel) {//delegate && [delegate respondsToSelector:@selector(nodeTreeView:indentAtNodeLevel:)
             CGFloat indentationWidth = [delegate nodeTreeView:self indentAtNodeLevel:node.nodeLevel];
             [cell.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 obj.frame =  CGRectMake(indentationWidth, 0,tableView.frame.size.width-indentationWidth, obj.frame.size.height);
@@ -210,11 +223,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
     }
     
     //告知代理
-    if (self.treeDelegate) {
-        id treeDelegate = self.treeDelegate;
-        if ([treeDelegate respondsToSelector:@selector(nodeTreeView:didSelectNode:)]) {
-            [treeDelegate nodeTreeView:self didSelectNode:node];
-        }
+    if (_treeViewDelegateFalg.didSelectNode) {
+        [self.treeDelegate nodeTreeView:self didSelectNode:node];
     }
     //如果是自动刷新，则在代理方法执行完后会自动执行刷新方法
     if (self.autoRefresh) {
@@ -317,6 +327,14 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 }
 
 #pragma mark ======== Setters && Getters ========
+- (void)setTreeDelegate:(id<NodeTreeViewDelegate>)treeDelegate{
+    _treeDelegate = treeDelegate;
+    id delegate = _treeDelegate;
+    _treeViewDelegateFalg.didSelectNode = [delegate respondsToSelector:@selector(nodeTreeView:didSelectNode:)];
+    _treeViewDelegateFalg.indentAtNodelevel = [delegate respondsToSelector:@selector(nodeTreeView:indentAtNodeLevel:)];
+    _treeViewDelegateFalg.viewForNode = [delegate respondsToSelector:@selector(nodeTreeView:viewForNode:)];
+    
+}
 - (void)setRefreshPolicy:(NodeTreeRefreshPolicy)refreshPolicy{
     if (refreshPolicy != NodeTreeRefreshPolicyManaul && refreshPolicy != NodeTreeRefreshPolicyAutomic) {//避免外界赋值错误，如果错误会默认变为手动刷新
         refreshPolicy = NodeTreeRefreshPolicyManaul;
