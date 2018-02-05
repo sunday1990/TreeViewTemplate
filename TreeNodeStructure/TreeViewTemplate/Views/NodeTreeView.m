@@ -114,6 +114,14 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
 }
 */
 
+- (instancetype)init{
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Must use initWithFrame: treeViewStyle: instead" userInfo:nil];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    return [self initWithFrame:frame treeViewStyle:NodeTreeViewStyleBreadcrumbs];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame treeViewStyle:(NodeTreeViewStyle)style{
     if (self = [super initWithFrame:frame]) {
         self.treeViewStyle = style;
@@ -124,15 +132,6 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         self.refreshPolicy = NodeTreeRefreshPolicyManaul;
         [self addSubview:self.tableview];
         
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame{
-    if (self = [super initWithFrame:frame]) {
-        self.treeViewStyle = NodeTreeViewStyleBreadcrumbs;//默认
-        self.refreshPolicy = NodeTreeRefreshPolicyManaul;
-        [self addSubview:self.tableview];
     }
     return self;
 }
