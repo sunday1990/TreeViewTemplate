@@ -252,6 +252,8 @@ static inline void RecursiveLayoutSubviews(UIView *_Nonnull view){
         [self.tableview reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)] withRowAnimation:animation];
     }else{
         if (self.allNodes.count == 0) {
+            //默认根节点展开，不然没有意义
+            node.expand = YES;
             //初始化数据源，递归的将所有需要展开的节点，加入数据源中
             RecursiveInitializeAllNodesWithRootNode(self.allNodes, node);
             self.frame = CGRectMake(0, 0, self.frame.size.width, node.currentTreeHeight);
